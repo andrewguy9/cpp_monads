@@ -1,8 +1,31 @@
 /*
+ * Monad Tools:
+ * define monad typeclass
+ */
+
+
+#include<functional>
+template <class T>
+class MONAD {
+  public:
+};
+
+#if 0
+/* bind:: m A -> (A -> m B) -> m B */
+template<class A, class B>
+MONAD<B> monadBind(MONAD<A> m, std::function<MONAD<B>(A)> f);
+
+/* return :: A -> Maybe A */
+//TODO This is a special function for MAYBE, not general for all monads.
+template<class A>
+MONAD<A> return_(A j);
+#endif
+
+/*
  * define maybe typeclass
  */
 template <class T>
-class MAYBE {
+class MAYBE : public MONAD<T> {
 
   template<typename A>
   friend MAYBE<A> Nothing();
@@ -19,15 +42,6 @@ class MAYBE {
   bool isNothing;
   T just;
 };
-
-/* Nothing */
-template<class T>
-MAYBE<T> Nothing()
-{
-  MAYBE<T> m;
-  m.isNothing = true;
-  return m;
-}
 
 /* Just a */
 template<class T>
@@ -57,11 +71,13 @@ bool isJust(MAYBE<A> m)
   return ! isNothing(m);
 }
 
-/* isNothing :: Maybe a -> Bool */
-template<class A>
-bool isNothing(MAYBE<A> m)
+/* Nothing */
+template<class T>
+MAYBE<T> Nothing()
 {
-  return m.isNothing;
+  MAYBE<T> m;
+  m.isNothing = true;
+  return m;
 }
 
 #include <stdexcept>
@@ -165,6 +181,33 @@ bool operator <(const MAYBE<A> &a, const MAYBE<A> &b)
   }
 }
 
+//TODO remimplemnt to be base def.
+/* isNothing :: Maybe a -> Bool */
+template<class A>
+bool isNothing(MAYBE<A> m)
+{
+  return m.isNothing;
+}
+
+//TODO remimplemnt to be base def.
+/* (>>=) :: Maybe a -> (a -> Maybe b) -> Maybe b */
+template<class A, class B>
+MAYBE<B> monadBind(MAYBE<A> m, std::function<MAYBE<B>(A)> f)
+{
+  if (isJust(m)) {
+    return f(fromJust(m));
+  } else {
+    return Nothing<B>();
+  }
+}
+
+/* return :: A -> Maybe A */
+template<class A>
+MAYBE<A> return_(A j)
+{
+  return Just(j);
+}
+
 /*
  * maybeTests for maybe typeclass
  */
@@ -248,31 +291,6 @@ string show(MAYBE<A> m)
 {
   static string default_("Nothing");
   return maybe(default_, to_string, m);
-}
-
-/*
- * Monad Tools
- */
-
-#include<functional>
-/* bind:: Maybe A -> (A -> Maybe B) -> Maybe B */
-//TODO This is a special function for MAYBE, not general for all monads.
-template<class A, class B>
-MAYBE<B> monadBind(MAYBE<A> m, std::function<MAYBE<B>(A)> foo)
-{
-  if (isJust(m)) {
-    return foo(fromJust(m));
-  } else {
-    return Nothing<B>();
-  }
-}
-
-/* return :: A -> Maybe A */
-//TODO This is a special function for MAYBE, not general for all monads.
-template<class A>
-MAYBE<A> return_(A j)
-{
-  return Just(j);
 }
 
 /*
