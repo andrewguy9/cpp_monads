@@ -2,12 +2,12 @@ CXX = clang++
 CXX_FLAGS = -Wfatal-errors -Wall -Wextra -Wpedantic -Wconversion -Wshadow -std=c++11
 
 # Final binary
-BIN = calc.out maybe_tests.out
+BIN = calc_tests.out maybe_tests.out
 # Put all auto generated stuff to this build dir.
 BUILD_DIR = ./build
 
 # List of all .cpp source files.
-CPP = calc.cpp maybe_tests.cpp $(wildcard dir1/*.cpp) $(wildcard dir2/*.cpp)
+CPP = calc_tests.cpp maybe_tests.cpp $(wildcard dir1/*.cpp) $(wildcard dir2/*.cpp)
 
 # All .o files go to build dir.
 OBJ = $(CPP:%.cpp=$(BUILD_DIR)/%.o)
@@ -25,9 +25,9 @@ DEP = $(OBJ:%.o=%.d)
 # 	$(CXX) $(CXX_FLAGS) $^ -o $@
 
 .PHONY : clean
-all: $(BUILD_DIR)/calc.out $(BUILD_DIR)/maybe_tests.out
+all: $(BUILD_DIR)/calc_tests.out $(BUILD_DIR)/maybe_tests.out
 
-$(BUILD_DIR)/calc.out : $(BUILD_DIR)/calc.o
+$(BUILD_DIR)/calc_tests.out : $(BUILD_DIR)/calc_tests.o
 	# Create build directories - same structure as sources.
 	mkdir -p $(@D)
 	$(CXX) $(CXX_FLAGS) $^ -o $@
