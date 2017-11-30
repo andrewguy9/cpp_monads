@@ -61,7 +61,6 @@ MAYBE<A> Just(A a)
   return m;
 }
 
-//TODO remimplemnt to be base def.
 /* isNothing :: Maybe a -> Bool */
 template<class A>
 bool isNothing(MAYBE<A> m)
