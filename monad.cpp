@@ -11,14 +11,13 @@ class MONAD {
 };
 
 #if 0
-/* bind:: m A -> (A -> m B) -> m B */
+/* bind:: Monad m => m A -> (A -> m B) -> m B */
 template<class A, class B>
 MONAD<B> monadBind(MONAD<A> m, std::function<MONAD<B>(A)> f);
 
-/* return :: A -> Maybe A */
-//TODO This is a special function for MAYBE, not general for all monads.
+/* return :: Monad m => A -> m A */
 template<class A>
-MONAD<A> return_(A j);
+MONAD<A> monadReturn_(A j);
 #endif
 
 /*
@@ -43,25 +42,31 @@ class MAYBE : public MONAD<T> {
   T just;
 };
 
-/* Just a */
+/* Nothing */
 template<class T>
-MAYBE<T> Just(T a)
+MAYBE<T> Nothing()
 {
   MAYBE<T> m;
+  m.isNothing = true;
+  return m;
+}
+
+/* Just a */
+template<class A>
+MAYBE<A> Just(A a)
+{
+  MAYBE<A> m;
   m.isNothing = false;
   m.just = a;
   return m;
 }
 
-/* maybe :: b -> (a -> b) -> Maybe a -> b */
-template<class A, class B>
-B maybe(B default_, B foo(A), MAYBE<A> m)
+//TODO remimplemnt to be base def.
+/* isNothing :: Maybe a -> Bool */
+template<class A>
+bool isNothing(MAYBE<A> m)
 {
-if (isJust(m)) {
-    return foo(fromJust(m));
-  } else {
-    return default_;
-  }
+  return m.isNothing;
 }
 
 /* isJust :: Maybe a -> Bool */
@@ -71,13 +76,33 @@ bool isJust(MAYBE<A> m)
   return ! isNothing(m);
 }
 
-/* Nothing */
-template<class T>
-MAYBE<T> Nothing()
+/* (>>=) :: Maybe a -> (a -> Maybe b) -> Maybe b */
+template<class A, class B>
+MAYBE<B> monadBind(MAYBE<A> m, std::function<MAYBE<B>(A)> f)
 {
-  MAYBE<T> m;
-  m.isNothing = true;
-  return m;
+  if (isJust(m)) {
+    return f(fromJust(m));
+  } else {
+    return Nothing<B>();
+  }
+}
+
+/* return :: A -> Maybe A */
+template<class A>
+MAYBE<A> monadReturn_(A j)
+{
+  return Just(j);
+}
+
+/* maybe :: b -> (a -> b) -> Maybe a -> b */
+template<class A, class B>
+B maybe(B default_, B foo(A), MAYBE<A> m)
+{
+  if (isJust(m)) {
+    return foo(fromJust(m));
+  } else {
+    return default_;
+  }
 }
 
 #include <stdexcept>
@@ -155,6 +180,7 @@ std::vector<B> mapMaybe(MAYBE<B> foo(A), std::vector<A> l)
   }
   return o;
 }
+
 //TODO make a lazy version of mapMaybe.
 
 template<class A>
@@ -179,33 +205,6 @@ bool operator <(const MAYBE<A> &a, const MAYBE<A> &b)
   } else {
     return fromJust(a) < fromJust(b);
   }
-}
-
-//TODO remimplemnt to be base def.
-/* isNothing :: Maybe a -> Bool */
-template<class A>
-bool isNothing(MAYBE<A> m)
-{
-  return m.isNothing;
-}
-
-//TODO remimplemnt to be base def.
-/* (>>=) :: Maybe a -> (a -> Maybe b) -> Maybe b */
-template<class A, class B>
-MAYBE<B> monadBind(MAYBE<A> m, std::function<MAYBE<B>(A)> f)
-{
-  if (isJust(m)) {
-    return f(fromJust(m));
-  } else {
-    return Nothing<B>();
-  }
-}
-
-/* return :: A -> Maybe A */
-template<class A>
-MAYBE<A> return_(A j)
-{
-  return Just(j);
 }
 
 /*
@@ -344,7 +343,7 @@ class VALUE : public EXPR
 
   virtual MAYBE<int> eval()
   {
-    return return_(v);
+    return monadReturn_(v);
   }
 };
 
