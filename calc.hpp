@@ -47,6 +47,12 @@ class VALUE : public EXPR
   }
 };
 
+/*
+VALUE Value(int v) {
+  return Value(v);
+}
+*/
+
 class PLUS : public EXPR
 {
   EXPR &x,&y;
@@ -67,6 +73,12 @@ class PLUS : public EXPR
                 return add(n,m); })); }));
   }
 };
+
+/*
+PLUS Plus(EXPR &x, EXPR &y) {
+  return PLUS(x, y);
+}
+*/
 
 class SUB : public EXPR
 {
@@ -89,6 +101,12 @@ class SUB : public EXPR
   }
 };
 
+/*
+SUB Sub(EXPR &x, EXPR &y) {
+  return SUB(x,y);
+}
+*/
+
 class DIV : public EXPR
 {
   EXPR &x,&y;
@@ -110,6 +128,12 @@ class DIV : public EXPR
   }
 };
 
+/*
+DIV Div(EXPR &x, EXPR &y) {
+  return DIV(x,y);
+}
+*/
+
 class MULT : public EXPR
 {
   EXPR &x,&y;
@@ -130,6 +154,12 @@ class MULT : public EXPR
   }
 };
 
+/*
+MULT Mult(EXPR &x, EXPR &y) {
+  return MULT(x,y);
+}
+*/
+
 class NEG: public EXPR
 {
   EXPR &x;
@@ -144,5 +174,10 @@ class NEG: public EXPR
   }
 };
 
+/*
+NEG Neg(EXPR &x) {
+  return NEG(x);
+}
+*/
 
 #endif
