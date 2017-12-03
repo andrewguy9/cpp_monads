@@ -13,7 +13,7 @@ Haskell:
 data Bool = False | True
 ```
 
-Cpp:
+C++:
 
 ``` c++
 class Bool {
@@ -34,12 +34,41 @@ Rules:
 * Make external functions which act as constructors / factories.
     * They must be friends to the class so that they can call the private constructor.
 
+Haskell:
 ``` haskell
 x = True;
 y = False;
 ```
 
+C++:
 ``` c++
 auto x = True();
 auto y = False();
 ```
+
+Operations:
+
+Haskell:
+``` haskell
+(&&) :: Bool -> Bool -> Bool
+(||) :: Bool -> Bool -> Bool
+not :: Bool -> Bool
+```
+C++
+``` c++
+class Bool {
+  const bool b;
+  ...
+  // Operations
+  friend Bool operator && (const Bool & x, const Bool & y);
+  friend Bool operator || (const Bool & x, const Bool & y);
+  friend Bool operator ! (const Bool & x);
+  ...
+};
+
+Bool operator && (const Bool & x, const Bool & y) { return Bool(x.b && y.b); }
+Bool operator || (const Bool & x, const Bool & y) { return Bool(x.b || y.b); }
+Bool operator ! (const Bool & x) { return Bool(!x.b); }
+const Bool otherwise = True();
+```
+
