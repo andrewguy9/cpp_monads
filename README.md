@@ -72,3 +72,7 @@ Bool operator ! (const Bool & x) { return Bool(!x.b); }
 const Bool otherwise = True();
 ```
 
+Further Reading
+===
+
+[Monads in C++](https://bartoszmilewski.com/2011/07/11/monads-in-c/)
