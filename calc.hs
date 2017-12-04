@@ -1,3 +1,4 @@
+import System.Exit
 import System.Environment
 import Text.Read
 import Data.Maybe
@@ -67,3 +68,7 @@ main = do
   args <- getArgs
   let maybe_result = calc args
   putStrLn $ maybe "ERROR" show maybe_result
+  if isJust maybe_result then
+    exitFailure
+  else
+    exitSuccess
