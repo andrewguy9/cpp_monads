@@ -84,20 +84,20 @@ tryParseMult left right token = tryParseStr2 Mult "*" left right token
 tryParseDiv :: Expr -> Expr -> String -> Maybe Expr
 tryParseDiv left right token = tryParseStr2 Div "/" left right token
 
-fold0 :: (String -> Maybe Expr) -> [Expr] -> String -> Maybe [Expr]
-fold0 tryParse stack token = do
+exprFold0 :: (String -> Maybe Expr) -> [Expr] -> String -> Maybe [Expr]
+exprFold0 tryParse stack token = do
   v <- tryParse token
   return $ v : stack
 
-fold1 :: (Expr -> String -> Maybe Expr) -> [Expr] -> String -> Maybe [Expr]
-fold1 tryParse stack token = do
+exprFold1 :: (Expr -> String -> Maybe Expr) -> [Expr] -> String -> Maybe [Expr]
+exprFold1 tryParse stack token = do
   right <- listToMaybe stack
   let remaining = tail stack
   v <- tryParse right token
   return $ v : remaining
 
-fold2 :: (Expr -> Expr -> String -> Maybe Expr) -> [Expr] -> String -> Maybe [Expr]
-fold2 tryParse stack token = do
+exprFold2 :: (Expr -> Expr -> String -> Maybe Expr) -> [Expr] -> String -> Maybe [Expr]
+exprFold2 tryParse stack token = do
   right <- listToMaybe stack
   left <- listToMaybe (tail stack)
   let remaining = (tail.tail) stack
@@ -105,22 +105,22 @@ fold2 tryParse stack token = do
   return $ v : remaining
 
 fold_value :: [Expr] -> String -> Maybe [Expr]
-fold_value stack token = fold0 tryParseValue stack token
+fold_value stack token = exprFold0 tryParseValue stack token
 
 fold_neg :: [Expr] -> String -> Maybe [Expr]
-fold_neg stack token = fold1 tryParseNeg stack token
+fold_neg stack token = exprFold1 tryParseNeg stack token
 
 fold_plus :: [Expr] -> String -> Maybe [Expr]
-fold_plus stack token = fold2 tryParsePlus stack token
+fold_plus stack token = exprFold2 tryParsePlus stack token
 
 fold_sub :: [Expr] -> String -> Maybe [Expr]
-fold_sub stack token = fold2 tryParseSub stack token
+fold_sub stack token = exprFold2 tryParseSub stack token
 
 fold_mult :: [Expr] -> String -> Maybe [Expr]
-fold_mult stack token = fold2 tryParseMult stack token
+fold_mult stack token = exprFold2 tryParseMult stack token
 
 fold_div :: [Expr] -> String -> Maybe [Expr]
-fold_div stack token = fold2 tryParseDiv stack token
+fold_div stack token = exprFold2 tryParseDiv stack token
 
 build_somthing :: [Expr] -> String -> Maybe [Expr]
 build_somthing stack input =
