@@ -4,8 +4,8 @@ CXX_FLAGS = -Wfatal-errors -Wall -Wextra -Wpedantic -Wconversion -Wshadow -std=c
 HSCC = ghc
 HSCC_FLAGS = -hidir $(BUILD_DIR) -odir $(BUILD_DIR)
 
-# Final binary
-BIN = calc_tests.out maybe_tests.out calc.out
+# List of final binaries
+BINS = calc.out calc_tests.out maybe_tests.out hcalc.out
 # Put all auto generated stuff to this build dir.
 BUILD_DIR = ./build
 
@@ -15,40 +15,34 @@ CPP = calc_tests.cpp maybe_tests.cpp calc.cpp $(wildcard dir1/*.cpp) $(wildcard 
 # List of all .hs source files.
 HS = hcalc.hs
 
+# All .out files go to build dir.
+OUT = $(BINS:%.out=$(BUILD_DIR)/%.out)
 # All .o files go to build dir.
 OBJ = $(CPP:%.cpp=$(BUILD_DIR)/%.o)
+# All .hi files go to the build dir.
+HI = $(HS:%.hs=$(BUILD_DIR)/%.hi)
 # Gcc/Clang will create these .d files containing dependencies.
 DEP = $(OBJ:%.o=%.d)
 
-# Default target named after the binary.
-# $(BIN) : $(BUILD_DIR)/$(BIN)
-
-# # Actual target of the binary - depends on all .o files.
-# $(BUILD_DIR)/$(BIN) : $(OBJ)
-# 	# Create build directories - same structure as sources.
-# 	mkdir -p $(@D)
-# 	# Just link all the object files.
-# 	$(CXX) $(CXX_FLAGS) $^ -o $@
-
 .PHONY : clean
-all: $(BUILD_DIR)/calc_tests.out $(BUILD_DIR)/maybe_tests.out $(BUILD_DIR)/calc.out $(BUILD_DIR)/hcalc.out
+all: $(BINS)
 
-$(BUILD_DIR)/calc_tests.out : $(BUILD_DIR)/calc_tests.o
+calc_tests.out : $(BUILD_DIR)/calc_tests.o
 	# Create build directories - same structure as sources.
 	mkdir -p $(@D)
 	$(CXX) $(CXX_FLAGS) $^ -o $@
 
-$(BUILD_DIR)/maybe_tests.out : $(BUILD_DIR)/maybe_tests.o
+maybe_tests.out : $(BUILD_DIR)/maybe_tests.o
 	# Create build directories - same structure as sources.
 	mkdir -p $(@D)
 	$(CXX) $(CXX_FLAGS) $^ -o $@
 
-$(BUILD_DIR)/calc.out : $(BUILD_DIR)/calc.o
+calc.out : $(BUILD_DIR)/calc.o
 	# Create build directories - same structure as sources.
 	mkdir -p $(@D)
 	$(CXX) $(CXX_FLAGS) $^ -o $@
 
-$(BUILD_DIR)/hcalc.out : hcalc.hs
+hcalc.out : hcalc.hs
 	# Create build directories - same structure as sources.
 	mkdir -p $(@D)
 	$(HSCC) $(HSCC_FLAGS) $^ -o $@
@@ -68,4 +62,4 @@ $(BUILD_DIR)/%.o : %.cpp
 .PHONY : clean
 clean :
 	# This should remove all generated files.
-	-rm $(BUILD_DIR)/$(BIN) $(OBJ) $(DEP)
+	-rm $(BINS) $(OBJ) $(DEP) $(HI)
