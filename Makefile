@@ -18,9 +18,9 @@ HS = hcalc.hs
 # All .out files go to build dir.
 OUT = $(BINS:%.out=$(BUILD_DIR)/%.out)
 # All .o files go to build dir.
-OBJ = $(CPP:%.cpp=$(BUILD_DIR)/%.o)
+OBJ = $(CPP:%.cpp=$(BUILD_DIR)/%.o) $(BUILD_DIR)/Main.o
 # All .hi files go to the build dir.
-HI = $(HS:%.hs=$(BUILD_DIR)/%.hi)
+HI = $(BUILD_DIR)/Main.hi
 # Gcc/Clang will create these .d files containing dependencies.
 DEP = $(OBJ:%.o=%.d)
 
