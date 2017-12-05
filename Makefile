@@ -22,7 +22,7 @@ OBJ = $(CPP:%.cpp=$(BUILD_DIR)/%.o) $(BUILD_DIR)/Main.o
 # All .hi files go to the build dir.
 HI = $(BUILD_DIR)/Main.hi
 # Gcc/Clang will create these .d files containing dependencies.
-DEP = $(OBJ:%.o=%.d)
+DEP = $(CPP:%.cpp=$(BUILD_DIR)/%.d)
 
 .PHONY : clean
 all: $(BINS)
