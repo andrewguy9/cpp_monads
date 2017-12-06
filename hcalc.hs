@@ -85,7 +85,10 @@ tryParseDiv :: Expr -> Expr -> String -> Maybe Expr
 tryParseDiv left right token = tryParseStr2 Div "/" left right token
 
 exprFold0 :: (String -> Maybe Expr) -> [Expr] -> String -> Maybe [Expr]
-exprFold0 tryParse stack token = (tryParse token) >>= (\ x -> Just $ x:stack)
+exprFold0 tryParse stack token =
+  ms1 >>=
+    (\ x -> Just $ x:stack)
+  where ms1 = (tryParse token)
 
 exprFold1 :: (Expr -> String -> Maybe Expr) -> [Expr] -> String -> Maybe [Expr]
 exprFold1 tryParse stack token =
