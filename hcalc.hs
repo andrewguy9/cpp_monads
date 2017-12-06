@@ -97,12 +97,13 @@ exprFold1 tryParse stack token =
   where remaining = tail stack
 
 exprFold2 :: (Expr -> Expr -> String -> Maybe Expr) -> [Expr] -> String -> Maybe [Expr]
-exprFold2 tryParse stack token = do
-  right <- listToMaybe stack
-  left <- listToMaybe (tail stack)
-  let remaining = (tail.tail) stack
-  v <- tryParse left right token
-  return $ v : remaining
+exprFold2 tryParse stack token =
+  ms1 >>=
+    (\ s1 -> ms2 >>= (\ s2 -> tryParse s2 s1 token)) >>=
+    (\ x -> Just $ x:remaining)
+  where ms1 = listToMaybe stack
+        ms2 = listToMaybe (tail stack)
+        remaining = (tail.tail) stack
 
 fold_value :: [Expr] -> String -> Maybe [Expr]
 fold_value stack token = exprFold0 tryParseValue stack token
