@@ -137,27 +137,25 @@ build_somthing stack input =
   `mplus`
   (fold_div stack input)
 
-maybeFromSingleList :: [a] -> Maybe a
-maybeFromSingleList [x] = Just x
-maybeFromSingleList (x : xs) = Nothing
-maybeFromSingleList [] = Nothing
-
-parse :: [String] -> Maybe Expr
+parse :: [String] -> Maybe [Expr]
 parse tokens = do
   exprStack <- foldM build_somthing [] tokens
-  maybeFromSingleList exprStack
+  return exprStack
 
-run :: [String] -> Maybe Int
-run args = do
-  expr <- parse args
-  result <- eval expr
-  return result
+evaluate :: [Expr] -> [Maybe Int]
+evaluate exprs = map eval exprs
+
+showMaybeInt :: Maybe Int -> String
+showMaybeInt mx = maybe "Error Evaluating" show mx
 
 main = do
   args <- getArgs
-  let maybe_result = run args
-  putStrLn $ maybe "ERROR" show maybe_result
-  if isJust maybe_result then
-    exitFailure
+  let maybe_exprs = parse args
+  if isNothing maybe_exprs then
+    do
+      putStrLn("Failed to parse")
+      exitFailure
   else
-    exitSuccess
+    do
+      mapM (putStrLn.showMaybeInt) (evaluate (fromJust maybe_exprs))
+  exitSuccess
