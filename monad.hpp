@@ -17,7 +17,9 @@ class MONAD {
 /* bind:: Monad m => m A -> (A -> m B) -> m B */
 template<class A, class B>
 MONAD<B> monadBind(MONAD<A> m, std::function<MONAD<B>(A)> f);
+#endif
 
+#if 0
 /* return :: Monad m => A -> m A */
 template<class A>
 MONAD<A> monadReturn(A j);
