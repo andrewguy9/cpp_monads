@@ -25,4 +25,9 @@ template<class A>
 MONAD<A> monadReturn(A j);
 #endif
 
+#if 0
+/* mplus :: MonadPlus m => m a -> m a -> m a */
+MONAD<A> monadPlus(MONAD<A> a, MONAD<B> b);
+#endif
+
 #endif //MONAD_HPP

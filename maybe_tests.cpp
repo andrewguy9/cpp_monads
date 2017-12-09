@@ -74,4 +74,12 @@ int main()
   assert(!(Just(1) < Just(0)));
   assert(!(Just(1) < Just(0)));
   assert(Just(1) < Just(2));
+
+  MAYBE<int> one = Just(1);
+  MAYBE<int> two = Just(2);
+  MAYBE<int> nothing = Nothing<int>();
+  assert(monadPlus(one,two) == one);
+  assert(monadPlus(nothing, two) == two);
+  assert(monadPlus(one, nothing) == one);
+  assert(monadPlus(nothing, nothing) == nothing);
 }

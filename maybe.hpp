@@ -76,6 +76,16 @@ MAYBE<A> monadReturn(A j)
   return Just(j);
 }
 
+/* mplus :: MonadPlus m => m a -> m a -> m a */
+template<class A>
+MAYBE<A> monadPlus(MAYBE<A> a, MAYBE<A> b) {
+  if (isJust(a)) {
+    return a;
+  } else {
+    return b;
+  }
+}
+
 /* maybe :: b -> (a -> b) -> Maybe a -> b */
 template<class A, class B>
 B maybe(B default_, B foo(A), MAYBE<A> m)
