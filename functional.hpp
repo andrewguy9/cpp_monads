@@ -35,4 +35,13 @@ std::vector<B> map(std::function<B (A)> f, std::vector<A> as) {
   return bs;
 }
 
+/* foldl :: Foldable t => (b -> a -> b) -> b -> t a -> b */
+template <class A, class B>
+B foldl(std::function<B (B,A)> f, B accum, std::vector<A> as) {
+  for (auto a : as) {
+    accum = f(accum, a);
+  }
+  return accum;
+}
+
 #endif /* FUNCTIONAL_HPP */

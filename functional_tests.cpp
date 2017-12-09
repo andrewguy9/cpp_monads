@@ -23,5 +23,8 @@ int main()
   vector<int> map_test = map<int,int>(inc, nums);
   assert(map_test == inced);
 
+  auto sum = foldl<int,int>(add, 0, nums);
+  assert( 6 == sum );
+
   return 0;
 }
