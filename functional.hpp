@@ -25,4 +25,14 @@ uncurry(std::function<C (A,B)> f) {
     };
 }
 
+/* map :: (a -> b) -> [a] -> [b] */
+template <class A, class B>
+std::vector<B> map(std::function<B (A)> f, std::vector<A> as) {
+  std::vector<B> bs;
+  for (auto i : as) {
+    bs.push_back( f(i) );
+  }
+  return bs;
+}
+
 #endif /* FUNCTIONAL_HPP */
