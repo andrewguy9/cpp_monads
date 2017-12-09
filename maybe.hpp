@@ -71,7 +71,7 @@ MAYBE<B> monadBind(MAYBE<A> m, std::function<MAYBE<B>(A)> f)
 
 /* return :: A -> Maybe A */
 template<class A>
-MAYBE<A> monadReturn_(A j)
+MAYBE<A> monadReturn(A j)
 {
   return Just(j);
 }

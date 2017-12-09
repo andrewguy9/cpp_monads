@@ -20,7 +20,7 @@ MONAD<B> monadBind(MONAD<A> m, std::function<MONAD<B>(A)> f);
 
 /* return :: Monad m => A -> m A */
 template<class A>
-MONAD<A> monadReturn_(A j);
+MONAD<A> monadReturn(A j);
 #endif
 
 #endif //MONAD_HPP

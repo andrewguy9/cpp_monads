@@ -43,7 +43,7 @@ class VALUE : public EXPR
 
   virtual MAYBE<int> eval()
   {
-    return monadReturn_(v);
+    return monadReturn(v);
   }
 };
 
