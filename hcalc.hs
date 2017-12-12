@@ -135,9 +135,7 @@ build_somthing stack input =
   (fold_div stack input)
 
 parse :: [String] -> Maybe [Expr]
-parse tokens = do
-  exprStack <- foldM build_somthing [] tokens
-  return exprStack
+parse tokens = foldM build_somthing [] tokens
 
 evaluate :: [Expr] -> [Maybe Int]
 evaluate exprs = map eval exprs
