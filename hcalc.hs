@@ -81,43 +81,33 @@ tryParseMult left right token = tryParseStr2 Mult "*" left right token
 tryParseDiv :: Expr -> Expr -> String -> Maybe Expr
 tryParseDiv left right token = tryParseStr2 Div "/" left right token
 
-exprFold0 :: (String -> Maybe Expr) -> [Expr] -> String -> Maybe [Expr]
-exprFold0 tryParse stack token =
-  ms1 >>=
-    (\ x -> Just $ x:stack)
-  where ms1 = (tryParse token)
+exprFold0 :: (a -> Maybe b) -> a -> [b] -> Maybe [b]
+exprFold0 f a bs = (:bs) <$> (f a)
 
-exprFold1 :: (Expr -> String -> Maybe Expr) -> [Expr] -> String -> Maybe [Expr]
-exprFold1 tryParse stack token =
-  (listToMaybe stack) >>=
-    (\s1 -> (tryParse s1 token) >>= (\ x -> Just $ x:remaining))
-  where remaining = tail stack
+exprFold1 :: (Expr -> String -> Maybe Expr) -> String -> [Expr] -> Maybe [Expr]
+exprFold1 tryParse token (s1 : sx) = (:sx) <$> (tryParse s1 token)
+exprFold1 tryParse token []        = Nothing
 
-exprFold2 :: (Expr -> Expr -> String -> Maybe Expr) -> [Expr] -> String -> Maybe [Expr]
-exprFold2 tryParse stack token =
-  ms1 >>=
-    (\ s1 -> ms2 >>= (\ s2 -> tryParse s2 s1 token)) >>=
-    (\ x -> Just $ x:remaining)
-  where ms1 = listToMaybe stack
-        ms2 = listToMaybe (tail stack)
-        remaining = (tail.tail) stack
+exprFold2 :: (Expr -> Expr -> String -> Maybe Expr) -> String -> [Expr] -> Maybe [Expr]
+exprFold2 tryParse token (s1 : s2 : sx) = (:sx) <$> (tryParse s1 s2 token)
+exprFold2 _ _ _                         = Nothing
 
-build_somthing :: [Expr] -> String -> Maybe [Expr]
-build_somthing stack input =
-  (exprFold0 tryParseValue stack input)
+parse_token :: [Expr] -> String -> Maybe [Expr]
+parse_token stack token =
+  (exprFold0 tryParseValue token stack)
   `mplus`
-  (exprFold1 tryParseNeg stack input)
+  (exprFold1 tryParseNeg token stack)
   `mplus`
-  (exprFold2 tryParsePlus stack input)
+  (exprFold2 tryParsePlus token stack)
   `mplus`
-  (exprFold2 tryParseSub stack input)
+  (exprFold2 tryParseSub token stack)
   `mplus`
-  (exprFold2 tryParseMult stack input)
+  (exprFold2 tryParseMult token stack)
   `mplus`
-  (exprFold2 tryParseDiv stack input)
+  (exprFold2 tryParseDiv token stack)
 
 parse :: [String] -> Maybe [Expr]
-parse tokens = foldM build_somthing [] tokens
+parse tokens = foldM parse_token [] tokens
 
 evaluate :: [Expr] -> [Maybe Int]
 evaluate exprs = map eval exprs
