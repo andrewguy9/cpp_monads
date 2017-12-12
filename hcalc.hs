@@ -66,20 +66,11 @@ tryParseStr2 constructor opStr left right token =
   else
     Nothing
 
-tryParseNeg :: Expr -> String -> Maybe Expr
-tryParseNeg right token = tryParseStr1 Neg "_" right token
-
-tryParsePlus :: Expr -> Expr -> String -> Maybe Expr
-tryParsePlus left right token = tryParseStr2 Plus "+" left right token
-
-tryParseSub :: Expr -> Expr -> String -> Maybe Expr
-tryParseSub left right token = tryParseStr2 Sub "-" left right token
-
-tryParseMult :: Expr -> Expr -> String -> Maybe Expr
-tryParseMult left right token = tryParseStr2 Mult "*" left right token
-
-tryParseDiv :: Expr -> Expr -> String -> Maybe Expr
-tryParseDiv left right token = tryParseStr2 Div "/" left right token
+tryParseNeg  = tryParseStr1 Neg  "_"
+tryParsePlus = tryParseStr2 Plus "+"
+tryParseSub  = tryParseStr2 Sub  "-"
+tryParseMult = tryParseStr2 Mult "*"
+tryParseDiv  = tryParseStr2 Div  "/"
 
 exprFold0 :: (a -> Maybe b) -> a -> [b] -> Maybe [b]
 exprFold0 f a bs = (:bs) <$> (f a)
