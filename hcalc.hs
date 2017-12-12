@@ -102,37 +102,19 @@ exprFold2 tryParse stack token =
         ms2 = listToMaybe (tail stack)
         remaining = (tail.tail) stack
 
-fold_value :: [Expr] -> String -> Maybe [Expr]
-fold_value stack token = exprFold0 tryParseValue stack token
-
-fold_neg :: [Expr] -> String -> Maybe [Expr]
-fold_neg stack token = exprFold1 tryParseNeg stack token
-
-fold_plus :: [Expr] -> String -> Maybe [Expr]
-fold_plus stack token = exprFold2 tryParsePlus stack token
-
-fold_sub :: [Expr] -> String -> Maybe [Expr]
-fold_sub stack token = exprFold2 tryParseSub stack token
-
-fold_mult :: [Expr] -> String -> Maybe [Expr]
-fold_mult stack token = exprFold2 tryParseMult stack token
-
-fold_div :: [Expr] -> String -> Maybe [Expr]
-fold_div stack token = exprFold2 tryParseDiv stack token
-
 build_somthing :: [Expr] -> String -> Maybe [Expr]
 build_somthing stack input =
-  (fold_value stack input)
+  (exprFold0 tryParseValue stack input)
   `mplus`
-  (fold_neg stack input)
+  (exprFold1 tryParseNeg stack input)
   `mplus`
-  (fold_plus stack input)
+  (exprFold2 tryParsePlus stack input)
   `mplus`
-  (fold_sub stack input)
+  (exprFold2 tryParseSub stack input)
   `mplus`
-  (fold_mult stack input)
+  (exprFold2 tryParseMult stack input)
   `mplus`
-  (fold_div stack input)
+  (exprFold2 tryParseDiv stack input)
 
 parse :: [String] -> Maybe [Expr]
 parse tokens = foldM build_somthing [] tokens
