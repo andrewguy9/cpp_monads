@@ -38,24 +38,13 @@ data Expr =
     Div Expr Expr
   deriving(Show)
 
-apply1 :: (Int -> Maybe Int) -> Expr -> Maybe Int
-apply1 f x = do
-  resultx <- eval x
-  f resultx
-
-apply2 :: (Int -> Int -> Maybe Int) -> Expr -> Expr -> Maybe Int
-apply2 f x y = do
-  resultX <- eval x
-  resultY <- eval y
-  f resultX resultY
-
 eval :: Expr -> Maybe Int
 eval (Val  n)   = Just n
-eval (Neg  x  ) = apply1 safeNeg  x
-eval (Plus x y) = apply2 safePlus x y
-eval (Sub  x y) = apply2 safeSub  x y
-eval (Mult x y) = apply2 safeMult x y
-eval (Div  x y) = apply2 safeDiv  x y
+eval (Neg  x  ) = eval x >>= safeNeg
+eval (Plus x y) = join $ liftM2 safePlus (eval x) (eval y)
+eval (Sub  x y) = join $ liftM2 safeSub  (eval x) (eval y)
+eval (Mult x y) = join $ liftM2 safeMult (eval x) (eval y)
+eval (Div  x y) = join $ liftM2 safeDiv  (eval x) (eval y)
 
 readMaybeInt :: String -> Maybe Int
 readMaybeInt s = readMaybe s
