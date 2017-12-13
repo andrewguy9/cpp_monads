@@ -34,8 +34,7 @@ class Expr {
   virtual Maybe<int> eval() = 0;
 };
 
-class Value : public Expr
-{
+class Value : public Expr {
   int v;
 
   public:
