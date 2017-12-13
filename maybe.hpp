@@ -8,6 +8,11 @@
  */
 template <class T>
 class Maybe : public MONAD<T> {
+  const bool isNothing;
+  const T just;
+
+  Maybe() : isNothing(true), just() {}
+  Maybe(const T just_) : isNothing(false), just(just_) {};
 
   template<typename A>
   friend Maybe<A> Nothing();
@@ -20,9 +25,6 @@ class Maybe : public MONAD<T> {
 
   template<class A>
   friend A fromJust(Maybe<A> m);
-
-  bool isNothing;
-  T just;
 };
 
 /* Nothing */
@@ -30,7 +32,6 @@ template<class T>
 Maybe<T> Nothing()
 {
   Maybe<T> m;
-  m.isNothing = true;
   return m;
 }
 
@@ -38,9 +39,7 @@ Maybe<T> Nothing()
 template<class A>
 Maybe<A> Just(A a)
 {
-  Maybe<A> m;
-  m.isNothing = false;
-  m.just = a;
+  Maybe<A> m(a);
   return m;
 }
 
