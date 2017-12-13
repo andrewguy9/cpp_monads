@@ -159,11 +159,11 @@ Mult Mult(Expr &x, Expr &y) {
 }
 */
 
-class NEG: public Expr
+class Neg: public Expr
 {
   Expr &x;
   public:
-  NEG(Expr &x_): x(x_) {}
+  Neg(Expr &x_): x(x_) {}
 
   /* eval :: Expr -> Maybe Int */
   virtual Maybe<int> eval()
@@ -174,8 +174,8 @@ class NEG: public Expr
 };
 
 /*
-NEG Neg(Expr &x) {
-  return NEG(x);
+Neg Neg(Expr &x) {
+  return Neg(x);
 }
 */
 

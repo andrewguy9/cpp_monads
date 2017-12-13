@@ -28,9 +28,9 @@ int main() {
   auto two_over_zero_mult_five = Mult(two_over_zero, five);
   assert (isNothing(two_over_zero_mult_five.eval()));
 
-  auto neg_five = NEG(five);
+  auto neg_five = Neg(five);
   assert (-5 == fromJust(neg_five.eval()));
-  auto neg_two_over_zero = NEG(two_over_zero);
+  auto neg_two_over_zero = Neg(two_over_zero);
   assert (isNothing(neg_two_over_zero.eval()));
 
   auto five_plus_two = Plus(five,two);
