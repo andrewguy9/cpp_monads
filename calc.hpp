@@ -106,11 +106,11 @@ Sub Sub(Expr &x, Expr &y) {
 }
 */
 
-class DIV : public Expr
+class Div : public Expr
 {
   Expr &x,&y;
   public:
-  DIV(Expr &x_, Expr &y_): x(x_), y(y_) {}
+  Div(Expr &x_, Expr &y_): x(x_), y(y_) {}
 
   /* eval :: Expr -> Maybe Int */
   virtual Maybe<int> eval()
@@ -128,8 +128,8 @@ class DIV : public Expr
 };
 
 /*
-DIV Div(Expr &x, Expr &y) {
-  return DIV(x,y);
+Div Div(Expr &x, Expr &y) {
+  return Div(x,y);
 }
 */
 

@@ -9,16 +9,16 @@ int main() {
   auto two  = Value(2);
   auto zero = Value(0);
 
-  auto five_over_two = DIV(five, two);
+  auto five_over_two = Div(five, two);
   assert (2 == fromJust(five_over_two.eval()));
-  auto two_over_zero = DIV(two, zero);
+  auto two_over_zero = Div(two, zero);
   assert (isNothing(two_over_zero.eval()));
 
-  auto five_over_two_over_zero = DIV(five, two_over_zero);
+  auto five_over_two_over_zero = Div(five, two_over_zero);
   assert (isNothing(five_over_two_over_zero.eval()));
-  auto two_over_zero_over_five = DIV(two_over_zero, five);
+  auto two_over_zero_over_five = Div(two_over_zero, five);
   assert (isNothing(two_over_zero_over_five.eval()));
-  auto zero_over_five_over_two = DIV(zero, five_over_two);
+  auto zero_over_five_over_two = Div(zero, five_over_two);
   assert (0 == fromJust(zero_over_five_over_two.eval()));
 
   auto five_mult_two = MULT(five,two);

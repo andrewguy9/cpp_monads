@@ -36,7 +36,7 @@ int main(int argc, char ** argv)
       stack.push_back(r);
     } else if (s == "/") {
       //TODO would be nice to have an abstraction for application.
-      DIV d(stack[0],stack[1]);
+      Div d(stack[0],stack[1]);
       stack.pop_back();
       stack.pop_back();
       Value r = fromJust(d.eval());
