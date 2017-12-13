@@ -21,12 +21,12 @@ Maybe<int> multiply(int a, int b)
 
 Maybe<int> add(int a, int b)
 {
-  return Just(a+b);
+  return Just(a + b);
 }
 
 Maybe<int> sub(int a, int b)
 {
-  return Just(a-b);
+  return Just(a - b);
 }
 
 class EXPR {
