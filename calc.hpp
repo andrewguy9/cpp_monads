@@ -4,7 +4,7 @@
 #include "maybe.hpp"
 
 /* safe_divide :: int -> int -> Maybe int */
-MAYBE<int> safe_divide(int a, int b)
+Maybe<int> safe_divide(int a, int b)
 {
   if (b == 0) {
     return Nothing<int>();
@@ -14,53 +14,46 @@ MAYBE<int> safe_divide(int a, int b)
 }
 
 /* multiply :: int -> int -> Maybe int */
-MAYBE<int> multiply(int a, int b)
+Maybe<int> multiply(int a, int b)
 {
   return Just(a * b);
 }
 
-MAYBE<int> add(int a, int b)
+Maybe<int> add(int a, int b)
 {
-  return Just(a+b);
+  return Just(a + b);
 }
 
-MAYBE<int> sub(int a, int b)
+Maybe<int> sub(int a, int b)
 {
-  return Just(a-b);
+  return Just(a - b);
 }
 
-class EXPR {
+class Expr {
   public:
-  virtual MAYBE<int> eval() = 0;
+  virtual Maybe<int> eval() = 0;
 };
 
-class VALUE : public EXPR
-{
+class Value : public Expr {
   int v;
 
   public:
-  VALUE(int v_): v(v_) {}
+  Value(int v_): v(v_) {}
 
-  virtual MAYBE<int> eval()
+  virtual Maybe<int> eval()
   {
     return monadReturn(v);
   }
 };
 
-/*
-VALUE Value(int v) {
-  return Value(v);
-}
-*/
-
-class PLUS : public EXPR
+class Plus : public Expr
 {
-  EXPR &x,&y;
+  Expr &x,&y;
   public:
-  PLUS(EXPR &x_, EXPR &y_): x(x_), y(y_) {}
+  Plus(Expr &x_, Expr &y_): x(x_), y(y_) {}
 
-  /* eval :: EXPR -> Maybe Int */
-  virtual MAYBE<int> eval()
+  /* eval :: Expr -> Maybe Int */
+  virtual Maybe<int> eval()
   {
     //TODO there has to be a better way to write bind expressions.
     /*
@@ -68,26 +61,20 @@ class PLUS : public EXPR
      *    eval y >>= (\m -> safe_div n m))
      */
     auto &y_ = y;
-    return monadBind(x.eval(), std::function<MAYBE<int>(int)> ([&y_](int n){
-          return monadBind(y_.eval(), std::function<MAYBE<int>(int)> ([n](int m){
+    return monadBind(x.eval(), std::function<Maybe<int>(int)> ([&y_](int n){
+          return monadBind(y_.eval(), std::function<Maybe<int>(int)> ([n](int m){
                 return add(n,m); })); }));
   }
 };
 
-/*
-PLUS Plus(EXPR &x, EXPR &y) {
-  return PLUS(x, y);
-}
-*/
-
-class SUB : public EXPR
+class Sub : public Expr
 {
-  EXPR &x,&y;
+  Expr &x,&y;
   public:
-  SUB(EXPR &x_, EXPR &y_): x(x_), y(y_) {}
+  Sub(Expr &x_, Expr &y_): x(x_), y(y_) {}
 
-  /* eval :: EXPR -> Maybe Int */
-  virtual MAYBE<int> eval()
+  /* eval :: Expr -> Maybe Int */
+  virtual Maybe<int> eval()
   {
     //TODO there has to be a better way to write bind expressions.
     /*
@@ -95,26 +82,20 @@ class SUB : public EXPR
      *    eval y >>= (\m -> safe_div n m))
      */
     auto &y_ = y;
-    return monadBind(x.eval(), std::function<MAYBE<int>(int)> ([&y_](int n){
-          return monadBind(y_.eval(), std::function<MAYBE<int>(int)> ([n](int m){
+    return monadBind(x.eval(), std::function<Maybe<int>(int)> ([&y_](int n){
+          return monadBind(y_.eval(), std::function<Maybe<int>(int)> ([n](int m){
                 return sub(n,m); })); }));
   }
 };
 
-/*
-SUB Sub(EXPR &x, EXPR &y) {
-  return SUB(x,y);
-}
-*/
-
-class DIV : public EXPR
+class Div : public Expr
 {
-  EXPR &x,&y;
+  Expr &x,&y;
   public:
-  DIV(EXPR &x_, EXPR &y_): x(x_), y(y_) {}
+  Div(Expr &x_, Expr &y_): x(x_), y(y_) {}
 
-  /* eval :: EXPR -> Maybe Int */
-  virtual MAYBE<int> eval()
+  /* eval :: Expr -> Maybe Int */
+  virtual Maybe<int> eval()
   {
     //TODO there has to be a better way to write bind expressions.
     /*
@@ -122,25 +103,19 @@ class DIV : public EXPR
      *    eval y >>= (\m -> safe_div n m))
      */
     auto &y_ = y;
-    return monadBind(x.eval(), std::function<MAYBE<int>(int)> ([&y_](int n){
-          return monadBind(y_.eval(), std::function<MAYBE<int>(int)> ([n](int m){
+    return monadBind(x.eval(), std::function<Maybe<int>(int)> ([&y_](int n){
+          return monadBind(y_.eval(), std::function<Maybe<int>(int)> ([n](int m){
                 return safe_divide(n,m); })); }));
   }
 };
 
-/*
-DIV Div(EXPR &x, EXPR &y) {
-  return DIV(x,y);
-}
-*/
-
-class MULT : public EXPR
+class Mult : public Expr
 {
-  EXPR &x,&y;
+  Expr &x,&y;
   public:
-  MULT(EXPR &x_, EXPR &y_): x(x_), y(y_) {}
-  /* eval :: EXPR -> Maybe Int */
-  virtual MAYBE<int> eval()
+  Mult(Expr &x_, Expr &y_): x(x_), y(y_) {}
+  /* eval :: Expr -> Maybe Int */
+  virtual Maybe<int> eval()
   {
     //TODO there has to be a better way to write bind expressions.
     /*
@@ -148,36 +123,24 @@ class MULT : public EXPR
      *    eval y >>= (\m -> safe_div n m))
      */
     auto &y_ = y;
-    return monadBind(x.eval(), std::function<MAYBE<int>(int)> ([&y_](int n){
-          return monadBind(y_.eval(), std::function<MAYBE<int>(int)> ([n](int m){
+    return monadBind(x.eval(), std::function<Maybe<int>(int)> ([&y_](int n){
+          return monadBind(y_.eval(), std::function<Maybe<int>(int)> ([n](int m){
                 return multiply(n,m); })); }));
   }
 };
 
-/*
-MULT Mult(EXPR &x, EXPR &y) {
-  return MULT(x,y);
-}
-*/
-
-class NEG: public EXPR
+class Neg: public Expr
 {
-  EXPR &x;
+  Expr &x;
   public:
-  NEG(EXPR &x_): x(x_) {}
+  Neg(Expr &x_): x(x_) {}
 
-  /* eval :: EXPR -> Maybe Int */
-  virtual MAYBE<int> eval()
+  /* eval :: Expr -> Maybe Int */
+  virtual Maybe<int> eval()
   {
-    auto n = VALUE(-1);
-    return MULT(n, x).eval();
+    auto n = Value(-1);
+    return Mult(n, x).eval();
   }
 };
-
-/*
-NEG Neg(EXPR &x) {
-  return NEG(x);
-}
-*/
 
 #endif
