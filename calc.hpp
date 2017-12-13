@@ -4,7 +4,7 @@
 #include "maybe.hpp"
 
 /* safe_divide :: int -> int -> Maybe int */
-MAYBE<int> safe_divide(int a, int b)
+Maybe<int> safe_divide(int a, int b)
 {
   if (b == 0) {
     return Nothing<int>();
@@ -14,24 +14,24 @@ MAYBE<int> safe_divide(int a, int b)
 }
 
 /* multiply :: int -> int -> Maybe int */
-MAYBE<int> multiply(int a, int b)
+Maybe<int> multiply(int a, int b)
 {
   return Just(a * b);
 }
 
-MAYBE<int> add(int a, int b)
+Maybe<int> add(int a, int b)
 {
   return Just(a+b);
 }
 
-MAYBE<int> sub(int a, int b)
+Maybe<int> sub(int a, int b)
 {
   return Just(a-b);
 }
 
 class EXPR {
   public:
-  virtual MAYBE<int> eval() = 0;
+  virtual Maybe<int> eval() = 0;
 };
 
 class VALUE : public EXPR
@@ -41,7 +41,7 @@ class VALUE : public EXPR
   public:
   VALUE(int v_): v(v_) {}
 
-  virtual MAYBE<int> eval()
+  virtual Maybe<int> eval()
   {
     return monadReturn_(v);
   }
@@ -60,7 +60,7 @@ class PLUS : public EXPR
   PLUS(EXPR &x_, EXPR &y_): x(x_), y(y_) {}
 
   /* eval :: EXPR -> Maybe Int */
-  virtual MAYBE<int> eval()
+  virtual Maybe<int> eval()
   {
     //TODO there has to be a better way to write bind expressions.
     /*
@@ -68,8 +68,8 @@ class PLUS : public EXPR
      *    eval y >>= (\m -> safe_div n m))
      */
     auto &y_ = y;
-    return monadBind(x.eval(), std::function<MAYBE<int>(int)> ([&y_](int n){
-          return monadBind(y_.eval(), std::function<MAYBE<int>(int)> ([n](int m){
+    return monadBind(x.eval(), std::function<Maybe<int>(int)> ([&y_](int n){
+          return monadBind(y_.eval(), std::function<Maybe<int>(int)> ([n](int m){
                 return add(n,m); })); }));
   }
 };
@@ -87,7 +87,7 @@ class SUB : public EXPR
   SUB(EXPR &x_, EXPR &y_): x(x_), y(y_) {}
 
   /* eval :: EXPR -> Maybe Int */
-  virtual MAYBE<int> eval()
+  virtual Maybe<int> eval()
   {
     //TODO there has to be a better way to write bind expressions.
     /*
@@ -95,8 +95,8 @@ class SUB : public EXPR
      *    eval y >>= (\m -> safe_div n m))
      */
     auto &y_ = y;
-    return monadBind(x.eval(), std::function<MAYBE<int>(int)> ([&y_](int n){
-          return monadBind(y_.eval(), std::function<MAYBE<int>(int)> ([n](int m){
+    return monadBind(x.eval(), std::function<Maybe<int>(int)> ([&y_](int n){
+          return monadBind(y_.eval(), std::function<Maybe<int>(int)> ([n](int m){
                 return sub(n,m); })); }));
   }
 };
@@ -114,7 +114,7 @@ class DIV : public EXPR
   DIV(EXPR &x_, EXPR &y_): x(x_), y(y_) {}
 
   /* eval :: EXPR -> Maybe Int */
-  virtual MAYBE<int> eval()
+  virtual Maybe<int> eval()
   {
     //TODO there has to be a better way to write bind expressions.
     /*
@@ -122,8 +122,8 @@ class DIV : public EXPR
      *    eval y >>= (\m -> safe_div n m))
      */
     auto &y_ = y;
-    return monadBind(x.eval(), std::function<MAYBE<int>(int)> ([&y_](int n){
-          return monadBind(y_.eval(), std::function<MAYBE<int>(int)> ([n](int m){
+    return monadBind(x.eval(), std::function<Maybe<int>(int)> ([&y_](int n){
+          return monadBind(y_.eval(), std::function<Maybe<int>(int)> ([n](int m){
                 return safe_divide(n,m); })); }));
   }
 };
@@ -140,7 +140,7 @@ class MULT : public EXPR
   public:
   MULT(EXPR &x_, EXPR &y_): x(x_), y(y_) {}
   /* eval :: EXPR -> Maybe Int */
-  virtual MAYBE<int> eval()
+  virtual Maybe<int> eval()
   {
     //TODO there has to be a better way to write bind expressions.
     /*
@@ -148,8 +148,8 @@ class MULT : public EXPR
      *    eval y >>= (\m -> safe_div n m))
      */
     auto &y_ = y;
-    return monadBind(x.eval(), std::function<MAYBE<int>(int)> ([&y_](int n){
-          return monadBind(y_.eval(), std::function<MAYBE<int>(int)> ([n](int m){
+    return monadBind(x.eval(), std::function<Maybe<int>(int)> ([&y_](int n){
+          return monadBind(y_.eval(), std::function<Maybe<int>(int)> ([n](int m){
                 return multiply(n,m); })); }));
   }
 };
@@ -167,7 +167,7 @@ class NEG: public EXPR
   NEG(EXPR &x_): x(x_) {}
 
   /* eval :: EXPR -> Maybe Int */
-  virtual MAYBE<int> eval()
+  virtual Maybe<int> eval()
   {
     auto n = VALUE(-1);
     return MULT(n, x).eval();

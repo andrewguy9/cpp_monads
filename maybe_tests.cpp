@@ -6,7 +6,7 @@ using namespace std;
 
 int inc (int a) { return ++a; }
 
-MAYBE<int> Even(int a) {
+Maybe<int> Even(int a) {
   if (a%2==0) {
     return Just(a);
   } else {
@@ -57,7 +57,7 @@ int main()
   vector<int> check_evens = {2,4};
   assert (check_evens == evens);
 
-  vector<MAYBE<int> > ml = {Just(1), Nothing<int>(), Just(2), Nothing<int>(), Just(3)};
+  vector<Maybe<int> > ml = {Just(1), Nothing<int>(), Just(2), Nothing<int>(), Just(3)};
   vector<int> justs = catMaybes(ml);
   vector<int> check_justs = {1,2,3};
   assert (check_justs == justs);
