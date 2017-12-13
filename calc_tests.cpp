@@ -33,7 +33,7 @@ int main() {
   auto neg_two_over_zero = NEG(two_over_zero);
   assert (isNothing(neg_two_over_zero.eval()));
 
-  auto five_plus_two = PLUS(five,two);
+  auto five_plus_two = Plus(five,two);
   assert (7 == fromJust(five_plus_two.eval()));
   auto five_sub_two = SUB(five, two);
   assert (3 == fromJust(five_sub_two.eval()));

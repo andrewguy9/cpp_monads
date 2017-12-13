@@ -52,11 +52,11 @@ Value Value(int v) {
 }
 */
 
-class PLUS : public Expr
+class Plus : public Expr
 {
   Expr &x,&y;
   public:
-  PLUS(Expr &x_, Expr &y_): x(x_), y(y_) {}
+  Plus(Expr &x_, Expr &y_): x(x_), y(y_) {}
 
   /* eval :: Expr -> Maybe Int */
   virtual Maybe<int> eval()
@@ -74,8 +74,8 @@ class PLUS : public Expr
 };
 
 /*
-PLUS Plus(Expr &x, Expr &y) {
-  return PLUS(x, y);
+Plus Plus(Expr &x, Expr &y) {
+  return Plus(x, y);
 }
 */
 

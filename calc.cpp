@@ -15,7 +15,7 @@ int main(int argc, char ** argv)
     string s = argv[i];
     if (0 == s.compare("+")) {
       //TODO would be nice to have an abstraction for application.
-      PLUS p(stack[0],stack[1]);
+      Plus p(stack[0],stack[1]);
       stack.pop_back();
       stack.pop_back();
       Value r = fromJust(p.eval());
