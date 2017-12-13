@@ -34,12 +34,12 @@ class Expr {
   virtual Maybe<int> eval() = 0;
 };
 
-class VALUE : public Expr
+class Value : public Expr
 {
   int v;
 
   public:
-  VALUE(int v_): v(v_) {}
+  Value(int v_): v(v_) {}
 
   virtual Maybe<int> eval()
   {
@@ -48,7 +48,7 @@ class VALUE : public Expr
 };
 
 /*
-VALUE Value(int v) {
+Value Value(int v) {
   return Value(v);
 }
 */
@@ -169,7 +169,7 @@ class NEG: public Expr
   /* eval :: Expr -> Maybe Int */
   virtual Maybe<int> eval()
   {
-    auto n = VALUE(-1);
+    auto n = Value(-1);
     return MULT(n, x).eval();
   }
 };

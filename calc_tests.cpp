@@ -5,9 +5,9 @@
 int main() {
   assert (2 == fromJust(safe_divide(5,2)));
 
-  auto five = VALUE(5);
-  auto two  = VALUE(2);
-  auto zero = VALUE(0);
+  auto five = Value(5);
+  auto two  = Value(2);
+  auto zero = Value(0);
 
   auto five_over_two = DIV(five, two);
   assert (2 == fromJust(five_over_two.eval()));
