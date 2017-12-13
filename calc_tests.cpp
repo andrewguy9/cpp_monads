@@ -21,11 +21,11 @@ int main() {
   auto zero_over_five_over_two = Div(zero, five_over_two);
   assert (0 == fromJust(zero_over_five_over_two.eval()));
 
-  auto five_mult_two = MULT(five,two);
+  auto five_mult_two = Mult(five,two);
   assert (10 == fromJust(five_mult_two.eval()));
-  auto zero_mult_two = MULT(zero, two);
+  auto zero_mult_two = Mult(zero, two);
   assert (0 == fromJust(zero_mult_two.eval()));
-  auto two_over_zero_mult_five = MULT(two_over_zero, five);
+  auto two_over_zero_mult_five = Mult(two_over_zero, five);
   assert (isNothing(two_over_zero_mult_five.eval()));
 
   auto neg_five = NEG(five);

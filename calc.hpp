@@ -133,11 +133,11 @@ Div Div(Expr &x, Expr &y) {
 }
 */
 
-class MULT : public Expr
+class Mult : public Expr
 {
   Expr &x,&y;
   public:
-  MULT(Expr &x_, Expr &y_): x(x_), y(y_) {}
+  Mult(Expr &x_, Expr &y_): x(x_), y(y_) {}
   /* eval :: Expr -> Maybe Int */
   virtual Maybe<int> eval()
   {
@@ -154,8 +154,8 @@ class MULT : public Expr
 };
 
 /*
-MULT Mult(Expr &x, Expr &y) {
-  return MULT(x,y);
+Mult Mult(Expr &x, Expr &y) {
+  return Mult(x,y);
 }
 */
 
@@ -169,7 +169,7 @@ class NEG: public Expr
   virtual Maybe<int> eval()
   {
     auto n = Value(-1);
-    return MULT(n, x).eval();
+    return Mult(n, x).eval();
   }
 };
 

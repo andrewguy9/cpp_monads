@@ -29,7 +29,7 @@ int main(int argc, char ** argv)
       stack.push_back(r);
     } else if (s == "*") {
       //TODO would be nice to have an abstraction for application.
-      MULT m(stack[0],stack[1]);
+      Mult m(stack[0],stack[1]);
       stack.pop_back();
       stack.pop_back();
       Value r = fromJust(m.eval());
