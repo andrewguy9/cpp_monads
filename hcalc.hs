@@ -1,11 +1,6 @@
 -- Note this program is written in a C++ compatible style to aid in porting it to C++.
 -- It does not exemplify good Haskell style.
 
--- Note: Avoid things which are hard to port to C++.
--- * Pattern Matching
--- * Do syntax
--- * Partial function application
-
 import System.Exit
 import System.Environment
 import Text.Read
