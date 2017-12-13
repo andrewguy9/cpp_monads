@@ -46,12 +46,6 @@ class Value : public Expr {
   }
 };
 
-/*
-Value Value(int v) {
-  return Value(v);
-}
-*/
-
 class Plus : public Expr
 {
   Expr &x,&y;
@@ -72,12 +66,6 @@ class Plus : public Expr
                 return add(n,m); })); }));
   }
 };
-
-/*
-Plus Plus(Expr &x, Expr &y) {
-  return Plus(x, y);
-}
-*/
 
 class Sub : public Expr
 {
@@ -100,12 +88,6 @@ class Sub : public Expr
   }
 };
 
-/*
-Sub Sub(Expr &x, Expr &y) {
-  return Sub(x,y);
-}
-*/
-
 class Div : public Expr
 {
   Expr &x,&y;
@@ -127,12 +109,6 @@ class Div : public Expr
   }
 };
 
-/*
-Div Div(Expr &x, Expr &y) {
-  return Div(x,y);
-}
-*/
-
 class Mult : public Expr
 {
   Expr &x,&y;
@@ -153,12 +129,6 @@ class Mult : public Expr
   }
 };
 
-/*
-Mult Mult(Expr &x, Expr &y) {
-  return Mult(x,y);
-}
-*/
-
 class Neg: public Expr
 {
   Expr &x;
@@ -172,11 +142,5 @@ class Neg: public Expr
     return Mult(n, x).eval();
   }
 };
-
-/*
-Neg Neg(Expr &x) {
-  return Neg(x);
-}
-*/
 
 #endif
