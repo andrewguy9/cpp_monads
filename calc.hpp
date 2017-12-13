@@ -29,12 +29,12 @@ Maybe<int> sub(int a, int b)
   return Just(a - b);
 }
 
-class EXPR {
+class Expr {
   public:
   virtual Maybe<int> eval() = 0;
 };
 
-class VALUE : public EXPR
+class VALUE : public Expr
 {
   int v;
 
@@ -53,13 +53,13 @@ VALUE Value(int v) {
 }
 */
 
-class PLUS : public EXPR
+class PLUS : public Expr
 {
-  EXPR &x,&y;
+  Expr &x,&y;
   public:
-  PLUS(EXPR &x_, EXPR &y_): x(x_), y(y_) {}
+  PLUS(Expr &x_, Expr &y_): x(x_), y(y_) {}
 
-  /* eval :: EXPR -> Maybe Int */
+  /* eval :: Expr -> Maybe Int */
   virtual Maybe<int> eval()
   {
     //TODO there has to be a better way to write bind expressions.
@@ -75,18 +75,18 @@ class PLUS : public EXPR
 };
 
 /*
-PLUS Plus(EXPR &x, EXPR &y) {
+PLUS Plus(Expr &x, Expr &y) {
   return PLUS(x, y);
 }
 */
 
-class SUB : public EXPR
+class SUB : public Expr
 {
-  EXPR &x,&y;
+  Expr &x,&y;
   public:
-  SUB(EXPR &x_, EXPR &y_): x(x_), y(y_) {}
+  SUB(Expr &x_, Expr &y_): x(x_), y(y_) {}
 
-  /* eval :: EXPR -> Maybe Int */
+  /* eval :: Expr -> Maybe Int */
   virtual Maybe<int> eval()
   {
     //TODO there has to be a better way to write bind expressions.
@@ -102,18 +102,18 @@ class SUB : public EXPR
 };
 
 /*
-SUB Sub(EXPR &x, EXPR &y) {
+SUB Sub(Expr &x, Expr &y) {
   return SUB(x,y);
 }
 */
 
-class DIV : public EXPR
+class DIV : public Expr
 {
-  EXPR &x,&y;
+  Expr &x,&y;
   public:
-  DIV(EXPR &x_, EXPR &y_): x(x_), y(y_) {}
+  DIV(Expr &x_, Expr &y_): x(x_), y(y_) {}
 
-  /* eval :: EXPR -> Maybe Int */
+  /* eval :: Expr -> Maybe Int */
   virtual Maybe<int> eval()
   {
     //TODO there has to be a better way to write bind expressions.
@@ -129,17 +129,17 @@ class DIV : public EXPR
 };
 
 /*
-DIV Div(EXPR &x, EXPR &y) {
+DIV Div(Expr &x, Expr &y) {
   return DIV(x,y);
 }
 */
 
-class MULT : public EXPR
+class MULT : public Expr
 {
-  EXPR &x,&y;
+  Expr &x,&y;
   public:
-  MULT(EXPR &x_, EXPR &y_): x(x_), y(y_) {}
-  /* eval :: EXPR -> Maybe Int */
+  MULT(Expr &x_, Expr &y_): x(x_), y(y_) {}
+  /* eval :: Expr -> Maybe Int */
   virtual Maybe<int> eval()
   {
     //TODO there has to be a better way to write bind expressions.
@@ -155,18 +155,18 @@ class MULT : public EXPR
 };
 
 /*
-MULT Mult(EXPR &x, EXPR &y) {
+MULT Mult(Expr &x, Expr &y) {
   return MULT(x,y);
 }
 */
 
-class NEG: public EXPR
+class NEG: public Expr
 {
-  EXPR &x;
+  Expr &x;
   public:
-  NEG(EXPR &x_): x(x_) {}
+  NEG(Expr &x_): x(x_) {}
 
-  /* eval :: EXPR -> Maybe Int */
+  /* eval :: Expr -> Maybe Int */
   virtual Maybe<int> eval()
   {
     auto n = VALUE(-1);
@@ -175,7 +175,7 @@ class NEG: public EXPR
 };
 
 /*
-NEG Neg(EXPR &x) {
+NEG Neg(Expr &x) {
   return NEG(x);
 }
 */
