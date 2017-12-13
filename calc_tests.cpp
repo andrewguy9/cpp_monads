@@ -35,7 +35,7 @@ int main() {
 
   auto five_plus_two = Plus(five,two);
   assert (7 == fromJust(five_plus_two.eval()));
-  auto five_sub_two = SUB(five, two);
+  auto five_sub_two = Sub(five, two);
   assert (3 == fromJust(five_sub_two.eval()));
 
   return 0;

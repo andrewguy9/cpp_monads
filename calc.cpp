@@ -22,7 +22,7 @@ int main(int argc, char ** argv)
       stack.push_back(r);
     } else if (0 == s.compare("-")) {
       //TODO would be nice to have an abstraction for application.
-      SUB b(stack[0],stack[1]);
+      Sub b(stack[0],stack[1]);
       stack.pop_back();
       stack.pop_back();
       Value r = fromJust(b.eval());

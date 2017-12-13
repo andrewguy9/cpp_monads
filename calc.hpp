@@ -79,11 +79,11 @@ Plus Plus(Expr &x, Expr &y) {
 }
 */
 
-class SUB : public Expr
+class Sub : public Expr
 {
   Expr &x,&y;
   public:
-  SUB(Expr &x_, Expr &y_): x(x_), y(y_) {}
+  Sub(Expr &x_, Expr &y_): x(x_), y(y_) {}
 
   /* eval :: Expr -> Maybe Int */
   virtual Maybe<int> eval()
@@ -101,8 +101,8 @@ class SUB : public Expr
 };
 
 /*
-SUB Sub(Expr &x, Expr &y) {
-  return SUB(x,y);
+Sub Sub(Expr &x, Expr &y) {
+  return Sub(x,y);
 }
 */
 
