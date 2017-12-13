@@ -5,12 +5,12 @@ HSCC = ghc
 HSCC_FLAGS = -hidir $(BUILD_DIR) -odir $(BUILD_DIR)
 
 # List of final binaries
-BINS = calc.out calc_tests.out maybe_tests.out functional_tests.out hcalc.out
+BINS = bool_tests.out calc.out calc_tests.out maybe_tests.out functional_tests.out hcalc.out
 # Put all auto generated stuff to this build dir.
 BUILD_DIR = ./build
 
 # List of all .cpp source files.
-CPP = calc_tests.cpp maybe_tests.cpp functional_tests.cpp calc.cpp $(wildcard dir1/*.cpp) $(wildcard dir2/*.cpp)
+CPP = bool_tests.cpp calc_tests.cpp maybe_tests.cpp functional_tests.cpp calc.cpp $(wildcard dir1/*.cpp) $(wildcard dir2/*.cpp)
 
 # List of all .hs source files.
 HS = hcalc.hs
@@ -43,6 +43,11 @@ functional_tests.out : $(BUILD_DIR)/functional_tests.o
 	$(CXX) $(CXX_FLAGS) $^ -o $@
 
 calc.out : $(BUILD_DIR)/calc.o
+	# Create build directories - same structure as sources.
+	mkdir -p $(@D)
+	$(CXX) $(CXX_FLAGS) $^ -o $@
+
+bool_tests.out : $(BUILD_DIR)/bool_tests.o
 	# Create build directories - same structure as sources.
 	mkdir -p $(@D)
 	$(CXX) $(CXX_FLAGS) $^ -o $@
