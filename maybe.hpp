@@ -14,12 +14,14 @@ class Maybe : public MONAD<T> {
   Maybe() : isNothing(true), just() {}
   Maybe(const T just_) : isNothing(false), just(just_) {};
 
+  // Constructors
   template<typename A>
   friend Maybe<A> Nothing();
 
   template<typename A>
   friend Maybe<A> Just(A);
 
+  // Operations
   template<class A>
   friend bool isNothing(Maybe<A> m);
 
@@ -57,6 +59,7 @@ bool isJust(Maybe<A> m)
   return ! isNothing(m);
 }
 
+/* (>>=) :: (Monad m) => m a -> (a -> m b) -> m b */
 /* (>>=) :: Maybe a -> (a -> Maybe b) -> Maybe b */
 template<class A, class B>
 Maybe<B> monadBind(Maybe<A> m, std::function<Maybe<B>(A)> f)
