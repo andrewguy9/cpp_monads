@@ -55,15 +55,11 @@ class Plus : public Expr
   /* eval :: Expr -> Maybe Int */
   virtual Maybe<int> eval()
   {
-    //TODO there has to be a better way to write bind expressions.
-    /*
-     * eval (Div x y) = eval x >>= (\n->
-     *    eval y >>= (\m -> safe_div n m))
-     */
-    auto &y_ = y;
-    return monadBind(x.eval(), std::function<Maybe<int>(int)> ([&y_](int n){
-          return monadBind(y_.eval(), std::function<Maybe<int>(int)> ([n](int m){
-                return add(n,m); })); }));
+    Maybe<int> rx = x.eval();
+    Maybe<int> ry = y.eval();
+    Maybe< Maybe<int> > lifted = liftM2<int,int,Maybe<int> >(add, rx, ry);
+    Maybe<int> joined = join<int>(lifted);
+    return joined;
   }
 };
 
