@@ -53,8 +53,7 @@ class Plus : public Expr
   Plus(Expr &x_, Expr &y_): x(x_), y(y_) {}
 
   /* eval :: Expr -> Maybe Int */
-  virtual Maybe<int> eval()
-  {
+  virtual Maybe<int> eval() {
     return join<int>(liftM2<int,int,Maybe<int> >(add, x.eval(), y.eval()));
   }
 };
@@ -66,17 +65,8 @@ class Sub : public Expr
   Sub(Expr &x_, Expr &y_): x(x_), y(y_) {}
 
   /* eval :: Expr -> Maybe Int */
-  virtual Maybe<int> eval()
-  {
-    //TODO there has to be a better way to write bind expressions.
-    /*
-     * eval (Div x y) = eval x >>= (\n->
-     *    eval y >>= (\m -> safe_div n m))
-     */
-    auto &y_ = y;
-    return monadBind(x.eval(), std::function<Maybe<int>(int)> ([&y_](int n){
-          return monadBind(y_.eval(), std::function<Maybe<int>(int)> ([n](int m){
-                return sub(n,m); })); }));
+  virtual Maybe<int> eval() {
+    return join<int>(liftM2<int,int,Maybe<int> >(sub, x.eval(), y.eval()));
   }
 };
 
@@ -87,17 +77,8 @@ class Div : public Expr
   Div(Expr &x_, Expr &y_): x(x_), y(y_) {}
 
   /* eval :: Expr -> Maybe Int */
-  virtual Maybe<int> eval()
-  {
-    //TODO there has to be a better way to write bind expressions.
-    /*
-     * eval (Div x y) = eval x >>= (\n->
-     *    eval y >>= (\m -> safe_div n m))
-     */
-    auto &y_ = y;
-    return monadBind(x.eval(), std::function<Maybe<int>(int)> ([&y_](int n){
-          return monadBind(y_.eval(), std::function<Maybe<int>(int)> ([n](int m){
-                return safe_divide(n,m); })); }));
+  virtual Maybe<int> eval() {
+    return join<int>(liftM2<int,int,Maybe<int> >(safe_divide, x.eval(), y.eval()));
   }
 };
 
@@ -107,17 +88,8 @@ class Mult : public Expr
   public:
   Mult(Expr &x_, Expr &y_): x(x_), y(y_) {}
   /* eval :: Expr -> Maybe Int */
-  virtual Maybe<int> eval()
-  {
-    //TODO there has to be a better way to write bind expressions.
-    /*
-     * eval (Div x y) = eval x >>= (\n->
-     *    eval y >>= (\m -> safe_div n m))
-     */
-    auto &y_ = y;
-    return monadBind(x.eval(), std::function<Maybe<int>(int)> ([&y_](int n){
-          return monadBind(y_.eval(), std::function<Maybe<int>(int)> ([n](int m){
-                return multiply(n,m); })); }));
+  virtual Maybe<int> eval() {
+    return join<int>(liftM2<int,int,Maybe<int> >(multiply, x.eval(), y.eval()));
   }
 };
 
