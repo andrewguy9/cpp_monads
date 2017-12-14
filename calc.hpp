@@ -55,11 +55,7 @@ class Plus : public Expr
   /* eval :: Expr -> Maybe Int */
   virtual Maybe<int> eval()
   {
-    Maybe<int> rx = x.eval();
-    Maybe<int> ry = y.eval();
-    Maybe< Maybe<int> > lifted = liftM2<int,int,Maybe<int> >(add, rx, ry);
-    Maybe<int> joined = join<int>(lifted);
-    return joined;
+    return join<int>(liftM2<int,int,Maybe<int> >(add, x.eval(), y.eval()));
   }
 };
 
