@@ -5,6 +5,7 @@
 using namespace std;
 
 int inc (int a) { return ++a; }
+int add (int a, int b) { return a + b; }
 
 Maybe<int> Even(int a) {
   if (a%2==0) {
@@ -77,9 +78,26 @@ int main()
 
   Maybe<int> one = Just(1);
   Maybe<int> two = Just(2);
+  Maybe<int> three = Just(3);
   Maybe<int> nothing = Nothing<int>();
   assert(monadPlus(one,two) == one);
   assert(monadPlus(nothing, two) == two);
   assert(monadPlus(one, nothing) == one);
   assert(monadPlus(nothing, nothing) == nothing);
+
+  auto liftm2_1 = liftM2<int,int,int>(add, one, two);
+  assert( liftm2_1 == three);
+  auto liftm2_2 = liftM2<int,int,int>(add, nothing, two);
+  assert( liftm2_2 == nothing);
+  auto liftm2_3 = liftM2<int,int,int>(add, one, nothing);
+  assert( liftm2_3 == nothing);
+  auto liftm2_4 = liftM2<int,int,int>(add, nothing, nothing);
+  assert( liftm2_4 == nothing);
+
+  Maybe< Maybe<int> > mmone = Just(Just(1));
+  Maybe<int> mone = Just(1);
+  assert(join(mmone) == mone);
+  Maybe<int> ni = Nothing<int>();
+  Maybe<Maybe<int> > nni = Nothing< Maybe<int> >();
+  assert(join(nni) == ni);
 }

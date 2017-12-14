@@ -11,9 +11,6 @@ class Maybe : public MONAD<T> {
   const bool isNothing;
   const T just;
 
-  Maybe() : isNothing(true), just() {}
-  Maybe(const T just_) : isNothing(false), just(just_) {};
-
   // Constructors
   template<typename A>
   friend Maybe<A> Nothing();
@@ -27,6 +24,12 @@ class Maybe : public MONAD<T> {
 
   template<class A>
   friend A fromJust(Maybe<A> m);
+
+  // C++ Constructors
+  public:
+  Maybe() : isNothing(true), just() {}
+  Maybe(const T just_) : isNothing(false), just(just_) {};
+
 };
 
 /* Nothing */
@@ -85,6 +88,27 @@ Maybe<A> monadPlus(Maybe<A> a, Maybe<A> b) {
     return a;
   } else {
     return b;
+  }
+}
+
+/* liftM2 :: Monad m => (a1 -> a2 -> r) -> m a1 -> m a2 -> m r */
+/* liftM2 :: (a1 -> a2 -> r) -> Maybe a1 -> Maybe a2 -> Maybe r */
+template<class A1, class A2, class R>
+Maybe<R> liftM2(std::function<R (A1,A2)> f, Maybe<A1> mx, Maybe<A2> my) {
+  return monadBind(mx, std::function<Maybe<R>(A1)> ([&my, f](A1 x){
+        return monadBind(my, std::function<Maybe<R>(A2)> ([x, f](A2 y){
+              return Just(f(x,y)); })); }));
+}
+
+/* join :: Monad m => m (m a) -> m a */
+/* join :: Maybe (Maybe a) -> Maybe a */
+template<class A>
+Maybe<A> join(Maybe< Maybe<A> > mma) {
+  if (isJust(mma)) {
+    auto ma = fromJust(mma);
+    return ma;
+  } else {
+    return Nothing<A>();
   }
 }
 
