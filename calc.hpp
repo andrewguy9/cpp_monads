@@ -13,6 +13,11 @@ Maybe<int> safe_divide(int a, int b)
   }
 }
 
+/* neg :: int -> Maybe int */
+Maybe<int> neg(int a) {
+    return Just<int>(-1 * a);
+}
+
 /* multiply :: int -> int -> Maybe int */
 Maybe<int> multiply(int a, int b)
 {
@@ -40,8 +45,7 @@ class Value : public Expr {
   public:
   Value(int v_): v(v_) {}
 
-  virtual Maybe<int> eval()
-  {
+  virtual Maybe<int> eval() {
     return monadReturn(v);
   }
 };
@@ -100,10 +104,8 @@ class Neg: public Expr
   Neg(Expr &x_): x(x_) {}
 
   /* eval :: Expr -> Maybe Int */
-  virtual Maybe<int> eval()
-  {
-    auto n = Value(-1);
-    return Mult(n, x).eval();
+  virtual Maybe<int> eval() {
+    return monadBind<int,int>(x.eval(), neg);
   }
 };
 
