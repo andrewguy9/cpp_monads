@@ -7,10 +7,6 @@
 #include<string>
 class Bool {
   const bool b;
-  Bool (const bool & b_) : b(b_) {}
-  // Constructors
-  friend const Bool True();
-  friend const Bool False();
   // Operations
   friend Bool operator && (const Bool & x, const Bool & y);
   friend Bool operator || (const Bool & x, const Bool & y);
@@ -23,6 +19,7 @@ class Bool {
   friend std::string show(const Bool & x);
   public:
   // Allow usage with bool context expressions.(i.e. if statements)
+  Bool (const bool & b_) : b(b_) {}
   operator bool() const {return b;}
 };
 

@@ -27,14 +27,14 @@ class Maybe : public MONAD<T> {
 
   // C++ Constructors
   public:
-  Maybe() : isNothing(true), just() {}
+  Maybe() : isNothing(true), just() {};
   Maybe(const T just_) : isNothing(false), just(just_) {};
 
 };
 
 /* Nothing */
 template<class T>
-Maybe<T> Nothing()
+const Maybe<T> Nothing()
 {
   Maybe<T> m;
   return m;
@@ -42,7 +42,7 @@ Maybe<T> Nothing()
 
 /* Just a */
 template<class A>
-Maybe<A> Just(A a)
+const Maybe<A> Just(A a)
 {
   Maybe<A> m(a);
   return m;
@@ -94,7 +94,7 @@ Maybe<A> monadPlus(Maybe<A> a, Maybe<A> b) {
 /* liftM2 :: Monad m => (a1 -> a2 -> r) -> m a1 -> m a2 -> m r */
 /* liftM2 :: (a1 -> a2 -> r) -> Maybe a1 -> Maybe a2 -> Maybe r */
 template<class A1, class A2, class R>
-Maybe<R> liftM2(std::function<R (A1,A2)> f, Maybe<A1> mx, Maybe<A2> my) {
+const Maybe<R> liftM2(std::function<R (A1,A2)> f, Maybe<A1> mx, Maybe<A2> my) {
   return monadBind(mx, std::function<Maybe<R>(A1)> ([&my, f](A1 x){
         return monadBind(my, std::function<Maybe<R>(A2)> ([x, f](A2 y){
               return Just(f(x,y)); })); }));

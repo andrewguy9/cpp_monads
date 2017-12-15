@@ -50,7 +50,7 @@ class Value : public Expr {
   }
 };
 
-Value Value_(int v) {
+const Value Value_(int v) {
   return Value(v);
 }
 
@@ -66,6 +66,10 @@ class Plus : public Expr
   }
 };
 
+const Plus Plus_(Expr &x, Expr &y) {
+  return Plus(x,y);
+}
+
 class Sub : public Expr
 {
   Expr &x,&y;
@@ -77,6 +81,10 @@ class Sub : public Expr
     return join<int>(liftM2<int,int,Maybe<int> >(sub, x.eval(), y.eval()));
   }
 };
+
+const Sub Sub_(Expr &x, Expr &y) {
+  return Sub(x,y);
+}
 
 class Div : public Expr
 {
@@ -90,6 +98,10 @@ class Div : public Expr
   }
 };
 
+const Div Div_(Expr &x, Expr &y) {
+  return Div(x,y);
+}
+
 class Mult : public Expr
 {
   Expr &x,&y;
@@ -100,6 +112,10 @@ class Mult : public Expr
     return join<int>(liftM2<int,int,Maybe<int> >(multiply, x.eval(), y.eval()));
   }
 };
+
+const Mult Mult_(Expr &x, Expr &y) {
+  return Mult(x,y);
+}
 
 class Neg: public Expr
 {
@@ -112,5 +128,9 @@ class Neg: public Expr
     return monadBind<int,int>(x.eval(), neg);
   }
 };
+
+Neg Neg_(Expr &x) {
+  return Neg(x);
+}
 
 #endif
