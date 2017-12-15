@@ -50,6 +50,10 @@ class Value : public Expr {
   }
 };
 
+Value Value_(int v) {
+  return Value(v);
+}
+
 class Plus : public Expr
 {
   Expr &x,&y;

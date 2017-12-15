@@ -30,7 +30,8 @@ const Bool False() { return Bool(false); }
 Rules:
 * Data type names should be `CamelCase`.
 * All data members must be `const`.
-* Make a non-default constructor which is `private`.
+* Make a public constructor inside the class to enable default constructors.
+* Make a public function with `{classname}_` to act as haskell style constructor.
 * Make external functions which act as constructors / factories.
     * They must be friends to the class so that they can call the private constructor.
 
