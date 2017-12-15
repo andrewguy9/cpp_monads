@@ -66,7 +66,7 @@ class Plus : public Expr
   }
 };
 
-const Plus Plus_(Expr &x, Expr &y) {
+const Plus Plus_(Expr & x, Expr & y) {
   return Plus(x,y);
 }
 
@@ -74,7 +74,7 @@ class Sub : public Expr
 {
   Expr &x,&y;
   public:
-  Sub(Expr &x_, Expr &y_): x(x_), y(y_) {}
+  Sub(Expr & x_, Expr & y_): x(x_), y(y_) {}
 
   /* eval :: Expr -> Maybe Int */
   virtual const Maybe<int> eval() const {
@@ -82,7 +82,7 @@ class Sub : public Expr
   }
 };
 
-const Sub Sub_(Expr &x, Expr &y) {
+const Sub Sub_(Expr & x, Expr & y) {
   return Sub(x,y);
 }
 
@@ -90,7 +90,7 @@ class Div : public Expr
 {
   Expr &x,&y;
   public:
-  Div(Expr &x_, Expr &y_): x(x_), y(y_) {}
+  Div(Expr & x_, Expr & y_): x(x_), y(y_) {}
 
   /* eval :: Expr -> Maybe Int */
   virtual const Maybe<int> eval() const {
@@ -98,7 +98,7 @@ class Div : public Expr
   }
 };
 
-const Div Div_(Expr &x, Expr &y) {
+const Div Div_(Expr & x, Expr & y) {
   return Div(x,y);
 }
 
@@ -106,14 +106,14 @@ class Mult : public Expr
 {
   Expr &x,&y;
   public:
-  Mult(Expr &x_, Expr &y_): x(x_), y(y_) {}
+  Mult(Expr & x_, Expr & y_): x(x_), y(y_) {}
   /* eval :: Expr -> Maybe Int */
   virtual const Maybe<int> eval() const {
     return join<int>(liftM2<int,int,Maybe<int> >(multiply, x.eval(), y.eval()));
   }
 };
 
-const Mult Mult_(Expr &x, Expr &y) {
+const Mult Mult_(Expr & x, Expr & y) {
   return Mult(x,y);
 }
 
@@ -129,7 +129,7 @@ class Neg: public Expr
   }
 };
 
-Neg Neg_(Expr &x) {
+Neg Neg_(Expr & x) {
   return Neg(x);
 }
 
