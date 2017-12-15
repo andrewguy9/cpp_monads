@@ -46,5 +46,6 @@ B foldl(std::function<B (B,A)> f, B accum, std::vector<A> as) {
 
 //TODO implement general liftM2
 //TODO implement general join
+//TODO implement general fmap
 
 #endif /* FUNCTIONAL_HPP */

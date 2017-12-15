@@ -225,4 +225,16 @@ bool operator <(const Maybe<A> &a, const Maybe<A> & b)
   }
 }
 
+/* fmap :: Functor f => (a -> b) -> f a -> f b */
+/* fmap :: (a -> b) -> Maybe a -> Maybe b */
+template<class A, class B>
+Maybe<B> fmap(B f(A), Maybe<A> ma) {
+  if (isJust(ma)) {
+    auto a = fromJust(ma);
+    return f(a);
+  } else {
+    return Nothing<B>();
+  }
+}
+
 #endif //MAYBE_HPP

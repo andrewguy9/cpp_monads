@@ -100,4 +100,7 @@ int main()
   Maybe<int> ni = Nothing<int>();
   Maybe<Maybe<int> > nni = Nothing< Maybe<int> >();
   assert(join(nni) == ni);
+
+  assert (fmap(inc, mone) == Just(2));
+  assert (fmap(inc, ni) == Nothing<int>());
 }
