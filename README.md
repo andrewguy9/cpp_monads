@@ -32,6 +32,9 @@ Rules:
 * All data members must be `const`.
 * Make a public constructor inside the class to enable default constructors.
 * Make a public function with `{classname}_` to act as haskell style constructor.
+```
+const {classname} classname_(args)
+```
 * Make external functions which act as constructors / factories.
     * They must be friends to the class so that they can call the private constructor.
 
