@@ -13,10 +13,10 @@ class Maybe : public MONAD<T> {
 
   // Constructors
   template<typename A>
-  friend Maybe<A> Nothing();
+  friend const Maybe<A> Nothing();
 
   template<typename A>
-  friend Maybe<A> Just(A);
+  friend const Maybe<A> Just(A);
 
   // Operations
   template<class A>
@@ -36,13 +36,13 @@ class Maybe : public MONAD<T> {
 template<class T>
 const Maybe<T> Nothing()
 {
-  Maybe<T> m;
+  const Maybe<T> m;
   return m;
 }
 
 /* Just a */
 template<class A>
-const Maybe<A> Just(A a)
+const Maybe<A> Just(const A a)
 {
   Maybe<A> m(a);
   return m;
@@ -65,7 +65,7 @@ bool isJust(Maybe<A> m)
 /* (>>=) :: (Monad m) => m a -> (a -> m b) -> m b */
 /* (>>=) :: Maybe a -> (a -> Maybe b) -> Maybe b */
 template<class A, class B>
-Maybe<B> monadBind(Maybe<A> m, std::function<Maybe<B>(A)> f)
+const Maybe<B> monadBind(Maybe<A> m, std::function<Maybe<B>(A)> f)
 {
   if (isJust(m)) {
     return f(fromJust(m));
@@ -76,14 +76,14 @@ Maybe<B> monadBind(Maybe<A> m, std::function<Maybe<B>(A)> f)
 
 /* return :: A -> Maybe A */
 template<class A>
-Maybe<A> monadReturn(A j)
+const Maybe<A> monadReturn(A j)
 {
   return Just(j);
 }
 
 /* mplus :: MonadPlus m => m a -> m a -> m a */
 template<class A>
-Maybe<A> monadPlus(Maybe<A> a, Maybe<A> b) {
+const Maybe<A> monadPlus(Maybe<A> a, Maybe<A> b) {
   if (isJust(a)) {
     return a;
   } else {
@@ -103,7 +103,7 @@ const Maybe<R> liftM2(std::function<R (A1,A2)> f, Maybe<A1> mx, Maybe<A2> my) {
 /* join :: Monad m => m (m a) -> m a */
 /* join :: Maybe (Maybe a) -> Maybe a */
 template<class A>
-Maybe<A> join(Maybe< Maybe<A> > mma) {
+const Maybe<A> join(Maybe< Maybe<A> > mma) {
   if (isJust(mma)) {
     auto ma = fromJust(mma);
     return ma;
@@ -149,7 +149,7 @@ A fromMaybe(A default_, Maybe<A> m)
 /* listToMaybe :: [a] -> Maybe a */
 // Doesn't map to c++.
 template <class A>
-Maybe<A> listToMaybe(std::vector<A> l)
+const Maybe<A> listToMaybe(std::vector<A> l)
 {
   for (auto x: l) {
     return Just(x);

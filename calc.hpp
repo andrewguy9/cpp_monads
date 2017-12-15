@@ -36,7 +36,7 @@ Maybe<int> sub(int a, int b)
 
 class Expr {
   public:
-  virtual Maybe<int> eval() = 0;
+  virtual const Maybe<int> eval() const = 0;
 };
 
 class Value : public Expr {
@@ -45,7 +45,7 @@ class Value : public Expr {
   public:
   Value(int v_): v(v_) {}
 
-  virtual Maybe<int> eval() {
+  virtual const Maybe<int> eval() const {
     return monadReturn(v);
   }
 };
@@ -61,7 +61,7 @@ class Plus : public Expr
   Plus(Expr &x_, Expr &y_): x(x_), y(y_) {}
 
   /* eval :: Expr -> Maybe Int */
-  virtual Maybe<int> eval() {
+  virtual const Maybe<int> eval() const {
     return join<int>(liftM2<int,int,Maybe<int> >(add, x.eval(), y.eval()));
   }
 };
@@ -77,7 +77,7 @@ class Sub : public Expr
   Sub(Expr &x_, Expr &y_): x(x_), y(y_) {}
 
   /* eval :: Expr -> Maybe Int */
-  virtual Maybe<int> eval() {
+  virtual const Maybe<int> eval() const {
     return join<int>(liftM2<int,int,Maybe<int> >(sub, x.eval(), y.eval()));
   }
 };
@@ -93,7 +93,7 @@ class Div : public Expr
   Div(Expr &x_, Expr &y_): x(x_), y(y_) {}
 
   /* eval :: Expr -> Maybe Int */
-  virtual Maybe<int> eval() {
+  virtual const Maybe<int> eval() const {
     return join<int>(liftM2<int,int,Maybe<int> >(safe_divide, x.eval(), y.eval()));
   }
 };
@@ -108,7 +108,7 @@ class Mult : public Expr
   public:
   Mult(Expr &x_, Expr &y_): x(x_), y(y_) {}
   /* eval :: Expr -> Maybe Int */
-  virtual Maybe<int> eval() {
+  virtual const Maybe<int> eval() const {
     return join<int>(liftM2<int,int,Maybe<int> >(multiply, x.eval(), y.eval()));
   }
 };
@@ -124,7 +124,7 @@ class Neg: public Expr
   Neg(Expr &x_): x(x_) {}
 
   /* eval :: Expr -> Maybe Int */
-  virtual Maybe<int> eval() {
+  virtual const Maybe<int> eval() const {
     return monadBind<int,int>(x.eval(), neg);
   }
 };
