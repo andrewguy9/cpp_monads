@@ -133,4 +133,19 @@ Neg Neg_(Expr & x) {
   return Neg(x);
 }
 
+#include<string>
+#include<utility>
+Maybe<int> readMaybeInt(const std::string & s) {
+  size_t idx;
+  try {
+    int i(stoi(s, &idx));
+    if (idx != s.length()) {
+      return Nothing<int>();
+    } else {
+      return Just(i);
+    }
+  } catch (std::invalid_argument) {
+    return Nothing<int>();
+  }
+}
 #endif

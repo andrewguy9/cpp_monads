@@ -3,6 +3,11 @@
 #include<assert.h>
 
 int main() {
+  assert (readMaybeInt("1") == Just(1));
+  assert (readMaybeInt("x") == Nothing<int>());
+  assert (readMaybeInt("x1") == Nothing<int>());
+  assert (readMaybeInt("1x") == Nothing<int>());
+
   assert (2 == fromJust(safe_divide(5,2)));
 
   auto five = Value(5);
