@@ -16,19 +16,19 @@ class Maybe : public MONAD<T> {
   friend const Maybe<A> Nothing();
 
   template<typename A>
-  friend const Maybe<A> Just(const A&);
+  friend const Maybe<A> Just(const A &);
 
   // Operations
   template<class A>
-  friend bool isNothing(const Maybe<A>& m);
+  friend bool isNothing(const Maybe<A> & m);
 
   template<class A>
-  friend A fromJust(const Maybe<A>& m);
+  friend A fromJust(const Maybe<A> & m);
 
   // C++ Constructors
   public:
   Maybe() : isNothing(true), just() {};
-  Maybe(const T& just_) : isNothing(false), just(just_) {};
+  Maybe(const T & just_) : isNothing(false), just(just_) {};
 
 };
 
@@ -42,7 +42,7 @@ const Maybe<T> Nothing()
 
 /* Just a */
 template<class A>
-const Maybe<A> Just(const A& a)
+const Maybe<A> Just(const A & a)
 {
   Maybe<A> m(a);
   return m;
@@ -50,14 +50,14 @@ const Maybe<A> Just(const A& a)
 
 /* isNothing :: Maybe a -> Bool */
 template<class A>
-bool isNothing(const Maybe<A>& m)
+bool isNothing(const Maybe<A> & m)
 {
   return m.isNothing;
 }
 
 /* isJust :: Maybe a -> Bool */
 template<class A>
-bool isJust(const Maybe<A>& m)
+bool isJust(const Maybe<A> & m)
 {
   return ! isNothing(m);
 }
@@ -65,7 +65,7 @@ bool isJust(const Maybe<A>& m)
 /* (>>=) :: (Monad m) => m a -> (a -> m b) -> m b */
 /* (>>=) :: Maybe a -> (a -> Maybe b) -> Maybe b */
 template<class A, class B>
-const Maybe<B> monadBind(const Maybe<A>& m, std::function<Maybe<B>(A)> f)
+const Maybe<B> monadBind(const Maybe<A> & m, std::function<Maybe<B>(A)> f)
 {
   if (isJust(m)) {
     return f(fromJust(m));
@@ -76,14 +76,14 @@ const Maybe<B> monadBind(const Maybe<A>& m, std::function<Maybe<B>(A)> f)
 
 /* return :: A -> Maybe A */
 template<class A>
-const Maybe<A> monadReturn(const A& j)
+const Maybe<A> monadReturn(const A & j)
 {
   return Just(j);
 }
 
 /* mplus :: MonadPlus m => m a -> m a -> m a */
 template<class A>
-const Maybe<A> monadPlus(const Maybe<A>& a, const Maybe<A>& b) {
+const Maybe<A> monadPlus(const Maybe<A> & a, const Maybe<A> & b) {
   if (isJust(a)) {
     return a;
   } else {
@@ -94,7 +94,7 @@ const Maybe<A> monadPlus(const Maybe<A>& a, const Maybe<A>& b) {
 /* liftM2 :: Monad m => (a1 -> a2 -> r) -> m a1 -> m a2 -> m r */
 /* liftM2 :: (a1 -> a2 -> r) -> Maybe a1 -> Maybe a2 -> Maybe r */
 template<class A1, class A2, class R>
-const Maybe<R> liftM2(std::function<R (A1,A2)> f, const Maybe<A1>& mx, const Maybe<A2>& my) {
+const Maybe<R> liftM2(std::function<R (A1,A2)> f, const Maybe<A1> & mx, const Maybe<A2> & my) {
   return monadBind(mx, std::function<Maybe<R>(A1)> ([&my, f](A1 x){
         return monadBind(my, std::function<Maybe<R>(A2)> ([x, f](A2 y){
               return Just(f(x,y)); })); }));
@@ -103,7 +103,7 @@ const Maybe<R> liftM2(std::function<R (A1,A2)> f, const Maybe<A1>& mx, const May
 /* join :: Monad m => m (m a) -> m a */
 /* join :: Maybe (Maybe a) -> Maybe a */
 template<class A>
-const Maybe<A> join(const Maybe< Maybe<A> >& mma) {
+const Maybe<A> join(const Maybe< Maybe<A> > & mma) {
   if (isJust(mma)) {
     auto ma = fromJust(mma);
     return ma;
@@ -114,7 +114,7 @@ const Maybe<A> join(const Maybe< Maybe<A> >& mma) {
 
 /* maybe :: b -> (a -> b) -> Maybe a -> b */
 template<class A, class B>
-B maybe(const B& default_, B foo(A), const Maybe<A>& m)
+B maybe(const B & default_, B foo(A), const Maybe<A> & m)
 {
   if (isJust(m)) {
     return foo(fromJust(m));
@@ -126,7 +126,7 @@ B maybe(const B& default_, B foo(A), const Maybe<A>& m)
 #include <stdexcept>
 /* fromJust :: Maybe a -> a */
 template<class A>
-A fromJust(const Maybe<A>& m)
+A fromJust(const Maybe<A> & m)
 {
   if (isJust(m)) {
     return m.just;
@@ -137,7 +137,7 @@ A fromJust(const Maybe<A>& m)
 
 /* fromMaybe :: a -> Maybe a -> a */
 template<class A>
-A fromMaybe(const A& default_, const Maybe<A>& m)
+A fromMaybe(const A & default_, const Maybe<A> & m)
 {
   if (isJust(m)) {
     return fromJust(m);
@@ -160,7 +160,7 @@ const Maybe<A> listToMaybe(std::vector<A> l)
 /* maybeToList :: Maybe a -> [a] */
 // Doesn't map to c++.
 template<class A>
-std::vector<A> maybeToList(const Maybe<A>& m)
+std::vector<A> maybeToList(const Maybe<A> & m)
 {
   if (isJust(m)) {
     return std::vector<A>({fromJust(m)});
@@ -202,7 +202,7 @@ std::vector<B> mapMaybe(Maybe<B> foo(A), std::vector<A> l)
 //TODO make a lazy version of mapMaybe.
 
 template<class A>
-bool operator ==(const Maybe<A> &a, const Maybe<A> &b)
+bool operator ==(const Maybe<A> & a, const Maybe<A> & b)
 {
   if (isNothing(a) and isNothing(b)) {
     return true;
@@ -214,7 +214,7 @@ bool operator ==(const Maybe<A> &a, const Maybe<A> &b)
 }
 
 template<class A>
-bool operator <(const Maybe<A> &a, const Maybe<A> &b)
+bool operator <(const Maybe<A> &a, const Maybe<A> & b)
 {
   if (isNothing(b)) {
     return false;
