@@ -37,7 +37,8 @@ std::vector<B> map(std::function<B (A)> f, std::vector<A> as) {
 
 /* foldl :: Foldable t => (b -> a -> b) -> b -> t a -> b */
 template <class A, class B>
-B foldl(std::function<B (B,A)> f, B accum, std::vector<A> as) {
+B foldl(std::function<B (B,A)> f, const B & init, std::vector<A> as) {
+  auto accum = init;
   for (auto a : as) {
     accum = f(accum, a);
   }
