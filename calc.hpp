@@ -148,4 +148,9 @@ Maybe<int> readMaybeInt(const std::string & s) {
     return Nothing<int>();
   }
 }
+
+Maybe<Value> tryParseValue(std::string s) {
+  return fmap(Value_, readMaybeInt(s));
+}
+
 #endif
