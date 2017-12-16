@@ -8,8 +8,8 @@ int main() {
   assert (readMaybeInt("x1") == Nothing<int>());
   assert (readMaybeInt("1x") == Nothing<int>());
 
-  const Maybe<Value> pone = tryParseValue("1");
-  const Maybe<Value> mone = Just(Value(1));
+  Maybe<Value> pone = tryParseValue("1");
+  Maybe<Value> mone = Just(Value(1));
   assert (mone == pone);
 
   assert (2 == fromJust(safe_divide(5,2)));

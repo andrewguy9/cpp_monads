@@ -24,14 +24,14 @@ class Bool {
 };
 
 /* data constructors */
-const Bool True() { return Bool(true); }
-const Bool False() { return Bool(false); }
+Bool True() { return Bool(true); }
+Bool False() { return Bool(false); }
 
 /* Operations */
 Bool operator && (const Bool & x, const Bool & y) { return Bool(x.b && y.b); }
 Bool operator || (const Bool & x, const Bool & y) { return Bool(x.b || y.b); }
 Bool operator ! (const Bool & x) { return Bool(!x.b); }
-const Bool otherwise = True();
+Bool otherwise = True();
 
 template<class A>
 A bool_(A f, A t, Bool b) { if (b) { return t;} else {return f;} }

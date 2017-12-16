@@ -19,21 +19,21 @@ C++:
 class Bool {
   const bool b;
   Bool (const bool & b_) : b(b_) {}
-  friend const Bool True(const bool & b_);
-  friend const Bool False(const bool & b_);
+  friend Bool True(const bool & b_);
+  friend Bool False(const bool & b_);
 };
 
-const Bool True() { return Bool(true); }
-const Bool False() { return Bool(false); }
+Bool True() { return Bool(true); }
+Bool False() { return Bool(false); }
 ```
 
 Rules:
 * Data type names should be `CamelCase`.
 * All data members must be `const`.
 * Make a public constructor inside the class to enable default constructors.
-* Make a public function with `{classname}_` to act as haskell style constructor.
+* Make a public function with `{classname}_` to act as Haskell style constructor.
 ```
-const {classname} classname_(args)
+{classname} classname_(args)
 ```
 * Make external functions which act as constructors / factories.
     * They must be friends to the class so that they can call the private constructor.
@@ -73,7 +73,7 @@ class Bool {
 Bool operator && (const Bool & x, const Bool & y) { return Bool(x.b && y.b); }
 Bool operator || (const Bool & x, const Bool & y) { return Bool(x.b || y.b); }
 Bool operator ! (const Bool & x) { return Bool(!x.b); }
-const Bool otherwise = True();
+Bool otherwise = True();
 ```
 
 Further Reading
