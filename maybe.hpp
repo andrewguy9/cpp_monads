@@ -8,7 +8,15 @@
  */
 template <class T>
 class Maybe : public MONAD<T> {
-  const T * t;
+  const bool isNothing;
+  const T just;
+
+  // Constructors
+  template<typename A>
+  friend Maybe<A> Nothing();
+
+  template<typename A>
+  friend Maybe<A> Just(const A &);
 
   // Operations
   template<class A>
@@ -19,8 +27,9 @@ class Maybe : public MONAD<T> {
 
   // C++ Constructors
   public:
-  Maybe() : t(NULL) {};
-  Maybe(const T & t_) : t(&t_) {};
+  Maybe() : isNothing(true), just() {};
+  Maybe(const T & just_) : isNothing(false), just(just_) {};
+
 };
 
 /* Nothing */
@@ -43,14 +52,14 @@ Maybe<A> Just(const A & a)
 template<class A>
 bool isNothing(const Maybe<A> & m)
 {
-  return m.t == NULL;
+  return m.isNothing;
 }
 
 /* isJust :: Maybe a -> Bool */
 template<class A>
 bool isJust(const Maybe<A> & m)
 {
-  return !isNothing(m);
+  return ! isNothing(m);
 }
 
 /* (>>=) :: (Monad m) => m a -> (a -> m b) -> m b */
@@ -120,7 +129,7 @@ template<class A>
 A fromJust(const Maybe<A> & m)
 {
   if (isJust(m)) {
-    return *m.t;
+    return m.just;
   } else {
     throw std::invalid_argument("fromJust called on Nothing");
   }
@@ -193,7 +202,7 @@ std::vector<B> mapMaybe(Maybe<B> foo(A), std::vector<A> l)
 //TODO make a lazy version of mapMaybe.
 
 template<class A>
-bool operator ==(Maybe<A> & a, Maybe<A> & b)
+bool operator ==(const Maybe<A> & a, const Maybe<A> & b)
 {
   if (isNothing(a) and isNothing(b)) {
     return true;
