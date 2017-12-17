@@ -24,35 +24,12 @@ HI = $(BUILD_DIR)/Main.hi
 # Gcc/Clang will create these .d files containing dependencies.
 DEP = $(CPP:%.cpp=$(BUILD_DIR)/%.d)
 
-.PHONY : clean
+.PRECIOUS: $(BUILD_DIR)/%.o
+
+.PHONY : all clean tests
 all: $(BINS)
 
-calc_tests.out : $(BUILD_DIR)/calc_tests.o
-	# Create build directories - same structure as sources.
-	mkdir -p $(@D)
-	$(CXX) $(CXX_FLAGS) $^ -o $@
-
-maybe_tests.out : $(BUILD_DIR)/maybe_tests.o
-	# Create build directories - same structure as sources.
-	mkdir -p $(@D)
-	$(CXX) $(CXX_FLAGS) $^ -o $@
-
-functional_tests.out : $(BUILD_DIR)/functional_tests.o
-	# Create build directories - same structure as sources.
-	mkdir -p $(@D)
-	$(CXX) $(CXX_FLAGS) $^ -o $@
-
-calc.out : $(BUILD_DIR)/calc.o
-	# Create build directories - same structure as sources.
-	mkdir -p $(@D)
-	$(CXX) $(CXX_FLAGS) $^ -o $@
-
-bool_tests.out : $(BUILD_DIR)/bool_tests.o
-	# Create build directories - same structure as sources.
-	mkdir -p $(@D)
-	$(CXX) $(CXX_FLAGS) $^ -o $@
-
-hcalc.out : hcalc.hs
+hcalc.out   : hcalc.hs
 	# Create build directories - same structure as sources.
 	mkdir -p $(@D)
 	$(HSCC) $(HSCC_FLAGS) $^ -o $@
@@ -69,7 +46,17 @@ $(BUILD_DIR)/%.o : %.cpp
 	# the same name as the .o file.
 	$(CXX) $(CXX_FLAGS) -MMD -c $< -o $@
 
-.PHONY : clean
-clean :
+# Build executible target for every single object file.
+%.out : $(BUILD_DIR)/%.o
+	$(CXX) $(CXX_FLAGS) $^ -o $@
+
+clean:
 	# This should remove all generated files.
 	-rm $(BINS) $(OBJ) $(DEP) $(HI)
+
+tests: bool_tests.out calc_tests.out functional_tests.out maybe_tests.out
+	./bool_tests.out
+	./calc_tests.out
+	./functional_tests.out
+	./maybe_tests.out
+
