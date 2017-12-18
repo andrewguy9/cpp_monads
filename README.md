@@ -80,3 +80,4 @@ Further Reading
 ===
 
 [Monads in C++](https://bartoszmilewski.com/2011/07/11/monads-in-c/)
+[Minimal C++ implementation of Functor, Monad and Maybe](https://gist.github.com/brotchie/3134600)
