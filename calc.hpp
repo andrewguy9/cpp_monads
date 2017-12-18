@@ -57,7 +57,7 @@ bool operator==(const Value & a, const Value & b) {
   return a.v == b.v;
 }
 
-Value Value_(int v) {
+Value Value_(const int & v) {
   return Value(v);
 }
 
@@ -65,7 +65,7 @@ class Plus : public Expr
 {
   const Expr &x,&y;
   public:
-  Plus(Expr &x_, Expr &y_): x(x_), y(y_) {}
+  Plus(const Expr &x_, const Expr &y_): x(x_), y(y_) {}
 
   /* eval :: Expr -> Maybe Int */
   virtual Maybe<int> eval() const {
@@ -73,7 +73,7 @@ class Plus : public Expr
   }
 };
 
-Plus Plus_(Expr & x, Expr & y) {
+Plus Plus_(const Expr & x, const Expr & y) {
   return Plus(x,y);
 }
 
@@ -81,7 +81,7 @@ class Sub : public Expr
 {
   const Expr &x,&y;
   public:
-  Sub(Expr & x_, Expr & y_): x(x_), y(y_) {}
+  Sub(const Expr & x_, const Expr & y_): x(x_), y(y_) {}
 
   /* eval :: Expr -> Maybe Int */
   virtual Maybe<int> eval() const {
@@ -89,7 +89,7 @@ class Sub : public Expr
   }
 };
 
-Sub Sub_(Expr & x, Expr & y) {
+Sub Sub_(const Expr & x, const Expr & y) {
   return Sub(x,y);
 }
 
@@ -97,7 +97,7 @@ class Div : public Expr
 {
   const Expr &x,&y;
   public:
-  Div(Expr & x_, Expr & y_): x(x_), y(y_) {}
+  Div(const Expr & x_, const Expr & y_): x(x_), y(y_) {}
 
   /* eval :: Expr -> Maybe Int */
   virtual Maybe<int> eval() const {
@@ -105,7 +105,7 @@ class Div : public Expr
   }
 };
 
-Div Div_(Expr & x, Expr & y) {
+Div Div_(const Expr & x, const Expr & y) {
   return Div(x,y);
 }
 
@@ -113,14 +113,14 @@ class Mult : public Expr
 {
   const Expr &x,&y;
   public:
-  Mult(Expr & x_, Expr & y_): x(x_), y(y_) {}
+  Mult(const Expr & x_, const Expr & y_): x(x_), y(y_) {}
   /* eval :: Expr -> Maybe Int */
   virtual Maybe<int> eval() const {
     return join<int>(liftM2<int,int,Maybe<int> >(multiply, x.eval(), y.eval()));
   }
 };
 
-Mult Mult_(Expr & x, Expr & y) {
+Mult Mult_(const Expr & x, const Expr & y) {
   return Mult(x,y);
 }
 
@@ -128,7 +128,8 @@ class Neg: public Expr
 {
   const Expr &x;
   public:
-  Neg(Expr &x_): x(x_) {}
+  Neg(const Expr &x_): x(x_) {}
+  Neg(): x(*new Value(0)) {}
 
   /* eval :: Expr -> Maybe Int */
   virtual Maybe<int> eval() const {
@@ -136,7 +137,7 @@ class Neg: public Expr
   }
 };
 
-Neg Neg_(Expr & x) {
+Neg Neg_(const Expr & x) {
   return Neg(x);
 }
 
